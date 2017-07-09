@@ -3,7 +3,7 @@
            :default-active="activeIndex"
            mode="horizontal"
            @select="handleSelect">
-    <el-menu-item index="1" style="padding-left: 40px">
+    <el-menu-item index="1" class="nav-home">
       <i class="fa fa-home fa-2x" style="vertical-align: middle" aria-hidden="true"></i>
     </el-menu-item>
     <el-submenu index="2">
@@ -32,3 +32,10 @@
     }
   }
 </script>
+
+<style>
+  .nav-home {
+    width: 200px;
+    text-align: center;
+  }
+</style>

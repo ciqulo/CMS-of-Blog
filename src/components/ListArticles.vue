@@ -1,10 +1,6 @@
 <template>
   <content-container>
-    <div slot="container" class="default">
-      <p style="text-align:center;color:white;font-size:40px;">
-        Welcome to VueWP
-      </p>
-    </div>
+    <div slot="container">哎嘿嘿</div>
   </content-container>
 
 </template>
@@ -22,11 +18,3 @@
     }
   }
 </script>
-<style>
-
-  .default {
-    background: linear-gradient(120deg, #f7ff00, #db36a4);
-    height: 100%;
-
-  }
-</style>
