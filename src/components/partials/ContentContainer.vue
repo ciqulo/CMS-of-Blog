@@ -17,7 +17,6 @@
     left: 200px;
     padding: 10px;
     box-sizing: border-box;
-    background-color: #eee;
     width: calc(100% - 200px);
   }
 
