@@ -5,6 +5,7 @@ import '../theme/index.css'
 import CMS from './CMS.vue'
 import router from './router'
 import store from './store'
+import 'whatwg-fetch'
 
 Vue.config.productionTip = false
 

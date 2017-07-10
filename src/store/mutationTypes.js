@@ -1,1 +1,1 @@
-export const HELLO = 'HELLO'
+export const SET_USER = 'SET_USER'

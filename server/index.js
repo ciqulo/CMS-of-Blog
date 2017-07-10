@@ -1,14 +1,23 @@
 const Koa = require('koa')
 const router = require('koa-router')()
-
-const http = require('http')
+const cors = require('kcors')
+const graphqlHTTP = require('koa-graphql')
+const g = require('./graphql')
 
 const app = new Koa()
+app.use(cors())
 router.get('/', async (ctx, next) => {
 
   ctx.body = 'Hi~'
 
 })
+
+router.post('/graphql', graphqlHTTP({
+  schema: g.schema,
+  graphiql: true,
+  rootValue: g.root
+}))
+
 
 app
   .use(router.routes())
@@ -16,12 +25,3 @@ app
 
 
 app.listen(3000)
-
-
-setTimeout(function () {
-  http.get('http://localhost:3000', function (res) {
-    let data = ''
-    res.on('data', chunk => data += chunk)
-    res.on('end', () => console.log(data))
-  })
-}, 1000)
