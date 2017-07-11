@@ -12,7 +12,23 @@ const {
   GraphQLObjectType,
 } = require('graphql')
 
-const base = new GraphQLObjectType({
+users = {
+  'ciqu': {
+    password: '111',
+    role: 'admin',
+    ip: ''
+  }
+}
+
+const getUser = async function (name) {
+  return new Promise(resolve => {
+    setTimeout(function () {
+      resolve(users[name])
+    }, 100)
+  })
+}
+
+const userType = new GraphQLObjectType({
   name: 'user',
   fields: {
     success: {
@@ -20,6 +36,31 @@ const base = new GraphQLObjectType({
     },
     role: {
       type: GraphQLString,
+    },
+    info: {
+      type: GraphQLString
+    }
+  }
+})
+
+const baseType = new GraphQLObjectType({
+  name: 'baseType',
+  fields: {
+    user: {
+      type: userType,
+      resolve: async (value, args, ctx) => {
+        const {name, password} = args
+        const user = await getUser(name)
+        const result = {}
+        if (!user) result.info = '用户不存在'
+        else if (user.password !== password) result.info = '密码错误'
+        else if (user.password === password) {
+          result.role = user.role
+          result.info = '登录成功'
+          ctx.session.isLoggedIn = true
+        }
+        return result
+      },
       args: {
         password: {
           type: GraphQLString
@@ -29,18 +70,24 @@ const base = new GraphQLObjectType({
         }
       }
     },
+
   }
 })
 
 const schema = new GraphQLSchema({
-  query: base
+  query: baseType
 })
+
+
 const root = {
-  role: (args) => {
+  user: (args) => {
     console.log(args)
-    return 'player'
+    return {
+      role: 'p',
+      success: false
+    }
   },
-  success: () => true
+  role: () => 'aaaaaaa'
 }
 
 

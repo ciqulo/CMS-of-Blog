@@ -1,5 +1,5 @@
 export function query(query, variables) {
-  return fetch('http://localhost:3000/graphql', {
+  return fetch('/graphql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

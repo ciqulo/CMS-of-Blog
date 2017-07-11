@@ -12,7 +12,7 @@ const state = {
 }
 
 const actions = {
-  async [actionTypes.LOGIN] ({commit, state}, payload = {name: 'aaa', password: 1233}) {
+  async [actionTypes.LOGIN] ({commit, state}, payload = {name: 'ciqu',}) {
     commit(mutationTypes.SET_USER, await api.login(
       queries.LOGIN_QUERY,
       payload
