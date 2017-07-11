@@ -2,9 +2,11 @@ const Koa = require('koa')
 const router = require('koa-router')()
 const cors = require('kcors')
 const graphqlHTTP = require('koa-graphql')
-const g = require('./graphql')
 const session = require('koa-session')
 const url = require('url')
+
+const rootValue = require('./rootValue')
+const schema = require('./schema')
 
 const app = new Koa()
 
@@ -36,9 +38,9 @@ app.use(async (ctx, next) => {
 
 
 router.post('/graphql', graphqlHTTP({
-  schema: g.schema,
+  schema,
   graphiql: true,
-  rootValue: g.root
+  rootValue,
 }))
 
 router.get('*', async (ctx, next) => {

@@ -1,41 +1,39 @@
 <template>
-  <content-container class="login">
-    <div slot="container">
-      <div class="content">
-        <div class="signUp">
-          <div>Do you have account?</div>
-          <button @click="signUp">SIGN UP</button>
-        </div>
-        <div class="loginIn">
-          <div>Have an account!</div>
-          <button @click="loginIn">LOGIN IN</button>
-        </div>
+  <div class="login">
+    <div class="content">
+      <div class="signUp">
+        <div>Do you have account?</div>
+        <button @click="signUp">SIGN UP</button>
       </div>
-      <div :class="[{contentWrite:chooseIndex === 1},{contentWrite2:chooseIndex === 2}]">
-        <div class="content-title">
-          <span v-if="chooseIndex === 1">SIGN UP</span>
-          <span v-if="chooseIndex === 2">LOGIN IN</span>
-        </div>
-        <div class="signMain">
-          <div class="fullName">
-            <input v-if="chooseIndex === 1" type="text" placeholder="FullName"/>
-          </div>
-          <div class="Email">
-            <input type="email" placeholder="E-mail"/>
-          </div>
-          <div class="passWord">
-            <input type="password" autocomplete="new-password" placeholder="Password"/>
-          </div>
-        </div>
-        <button v-if="chooseIndex === 1" class="signBtn">SIGN UP</button>
-        <button v-if="chooseIndex === 2" class="signBtn">LOGIN IN</button>
+      <div class="loginIn">
+        <div>Have an account!</div>
+        <button @click="loginIn">LOGIN IN</button>
       </div>
     </div>
-  </content-container>
+    <div :class="[{contentWrite:chooseIndex === 1},{contentWrite2:chooseIndex === 2}]">
+      <div class="content-title">
+        <span v-if="chooseIndex === 1">SIGN UP</span>
+        <span v-if="chooseIndex === 2">LOGIN IN</span>
+      </div>
+      <div class="signMain">
+        <div class="fullName">
+          <input v-if="chooseIndex === 1" type="text" placeholder="FullName"/>
+        </div>
+        <div class="Email">
+          <input type="email" placeholder="E-mail"/>
+        </div>
+        <div class="passWord">
+          <input type="password" autocomplete="new-password" placeholder="Password"/>
+        </div>
+      </div>
+      <button v-if="chooseIndex === 1" class="signBtn">SIGN UP</button>
+      <button v-if="chooseIndex === 2" class="signBtn">LOGIN IN</button>
+    </div>
+  </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import ContentContainer from './partials/ContentContainer.vue'
+  import {mapActions} from 'vuex'
   export default {
     data () {
       return {
@@ -48,10 +46,12 @@
       },
       loginIn(){
         this.chooseIndex = 2
-      }
+        this.LOGIN({name: 'ciqu', password: 111})
+      },
+      ...mapActions(['LOGIN'])
     },
-    components: {
-      ContentContainer,
+    created(){
+
     }
   }
 </script>
@@ -121,7 +121,6 @@
           left: 10%;
           top: 2rem;
         }
-      ;
         input {
           width: 100%;
           height: 2.5rem;
@@ -157,8 +156,6 @@
         size: 1.5rem;
         weight: 300;
       }
-    ;
-
     }
   }
 
