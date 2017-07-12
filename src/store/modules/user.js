@@ -9,6 +9,7 @@ const state = {
   lastLoginTime: '',
   ip: '',
   role: '',
+  user:{}
 }
 
 const actions = {
