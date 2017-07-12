@@ -29,6 +29,7 @@
       <button v-if="chooseIndex === 1" class="signBtn" @click="signUp">SIGN UP</button>
       <button v-if="chooseIndex === 2" class="signBtn" @click="loginIn">LOGIN IN</button>
     </div>
+
   </div>
 </template>
 
@@ -44,7 +45,6 @@
       }
     },
     created(){
-//
     },
     methods: {
       signUpTab(){
@@ -55,7 +55,7 @@
 
       },
       signUp(){
-
+        this.$message.error('注册你妹啊');
       },
       loginIn(){
         if (!this.userName) {
