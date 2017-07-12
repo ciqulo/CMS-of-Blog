@@ -57,7 +57,11 @@
 </script>
 <style lang="scss">
   .login {
+    width: 100%;
+    height: 100%;
+    position: absolute;
     background: url("http://oqjgod7s1.bkt.clouddn.com/c10471e1ff97e45032194a111ea7ab80.jpg");
+    background-size: cover;
   }
 
   .content {
