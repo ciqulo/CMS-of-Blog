@@ -12,7 +12,7 @@ const {
   GraphQLObjectType,
 } = require('graphql')
 
-const {getUser} = require('./db')
+const {getUserInfo, getUserSecrets} = require('./db')
 
 const userType = new GraphQLObjectType({
   name: 'user',
@@ -36,17 +36,37 @@ const baseType = new GraphQLObjectType({
     user: {
       type: userType,
       resolve: async (value, args, ctx) => {
-        const {name, password} = args
-        const user = await getUser(name)
-        const result = {}
-        if (!user) result.info = '用户不存在'
-        else if (user.password !== password) result.info = '密码错误'
-        else if (user.password === password) {
-          result.role = user.role
-          result.info = '登录成功'
-          ctx.session.isLoggedIn = true
+
+        const username = ctx.session.username
+
+        const name = username ? username : args.name
+        const userInfo = await getUserInfo(name)
+
+        if(!name){
+          console.log(11111)
+          return {}
         }
-        return result
+
+
+        if (!userInfo) return {info: '用户不存在'}
+
+        // 从session直接登录
+
+        if (username) {
+          console.log('zjdl:' + username)
+          return userInfo
+        }
+
+        const password = await getUserSecrets(name)
+
+        if (args.password !== password) return {info: '密码错误'}
+
+        if (args.password === password) {
+          ctx.session.username = name
+          return Object.assign(userInfo, {info: '登录成功'})
+        }
+
+        return {info: '未知错误'}
       },
       args: {
         password: {

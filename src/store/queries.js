@@ -6,3 +6,11 @@ export const LOGIN_QUERY =
     }
 }`
 
+export const GET_USER_INFO_QUERY =
+  `{
+    user{
+      role,
+      info
+    }
+}`
+

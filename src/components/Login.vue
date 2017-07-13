@@ -45,6 +45,7 @@
       }
     },
     created(){
+
     },
     methods: {
       signUpTab(){

@@ -4,11 +4,13 @@ import * as mutationTypes from '../mutationTypes'
 import * as queries from '../queries'
 
 const state = {
-  nickname: '',
-  token: '',
-  lastLoginTime: '',
-  ip: '',
-  role: '',
+  name: null,
+  nickname: null,
+  isValid: false,
+  token: null,
+  lastLoginTime: null,
+  ip: null,
+  role: null,
   user:{}
 }
 
@@ -18,6 +20,12 @@ const actions = {
       queries.LOGIN_QUERY,
       payload
     ))
+  },
+
+  async [actionTypes.GET_USER_INFO]({commit, state}, payload){
+    const result = await api.getUserInfo(queries.GET_USER_INFO_QUERY)
+
+    commit(mutationTypes.SET_USER, result)
   }
 }
 
