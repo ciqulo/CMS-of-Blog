@@ -1,8 +1,8 @@
 import {query} from '../utils/index'
 
 export default {
-  getUser (payload) {
-    return query(payload)
+  getUserInfo () {
+    return query.apply(this, arguments)
   },
   login(){
     return query.apply(this, arguments)

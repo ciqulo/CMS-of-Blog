@@ -1,4 +1,4 @@
-users = {
+const users = {
   'ciqu': {
     password: '111',
     role: 'admin',
@@ -6,7 +6,11 @@ users = {
   }
 }
 
-const getUser = async function (name) {
+const secrets = {
+  'ciqu': '111'
+}
+
+const getUserInfo = async function (name) {
   return new Promise(resolve => {
     setTimeout(function () {
       resolve(users[name])
@@ -14,4 +18,15 @@ const getUser = async function (name) {
   })
 }
 
-module.exports = {getUser}
+const getUserSecrets = async function (name) {
+  return new Promise(resolve => {
+    setTimeout(function () {
+      resolve(secrets[name])
+    }, 100)
+  })
+}
+
+module.exports = {
+  getUserInfo,
+  getUserSecrets
+}

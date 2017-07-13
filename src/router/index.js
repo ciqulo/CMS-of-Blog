@@ -5,9 +5,20 @@ import ListArticles from '../components/modules/ListArticles.vue'
 import Login from '../components/Login.vue'
 import Panel from '../components/Panel.vue'
 
+
+import store from '../store'
+import {GET_USER_INFO} from '../store/actionTypes'
+const {state, actions} = store
+
+// console.log(state, actions)
+//
+// console.log(store)
+// console.log(store.state.user.isValid)
+
 Vue.use(Router)
 
-export default new Router({
+
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -37,3 +48,15 @@ export default new Router({
     }
   ]
 })
+
+
+router.beforeEach((to, from, next) => {
+
+  if (!store.state.user.isValid) {
+    store.dispatch({type: GET_USER_INFO})
+  }
+
+  next()
+})
+
+export default router

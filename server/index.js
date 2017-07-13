@@ -25,16 +25,31 @@ app.use(session(CONFIG, app))
 
 app.use(cors({credentials: true}))
 
-app.use(async (ctx, next) => {
+router.get('*', async (ctx, next) => {
   !ctx.session.count ? ctx.session.count = 1 : ctx.session.count++
-  if (!ctx.session.isLoggedIn) {
-    const redirectUrl = '/login?referrer=' + ctx.url
-    // ctx.redirect(redirectUrl)
-    // return
+  const username = ctx.session.username
+  if (!username) {
+    // const redirectUrl = '/login?referrer=' + ctx.url
+    const redirectUrl = 'http://localhost:8080/#/login'
+    ctx.redirect(redirectUrl)
+    return
   }
 
   await next()
 })
+
+// app.use(async (ctx, next) => {
+//   !ctx.session.count ? ctx.session.count = 1 : ctx.session.count++
+//   const username = ctx.session.username
+//   if (!username) {
+//     // const redirectUrl = '/login?referrer=' + ctx.url
+//     const redirectUrl = 'http://localhost:8080/#/login'
+//     ctx.redirect(redirectUrl)
+//     return
+//   }
+//
+//   await next()
+// })
 
 
 router.post('/graphql', graphqlHTTP({
@@ -45,6 +60,7 @@ router.post('/graphql', graphqlHTTP({
 
 router.get('*', async (ctx, next) => {
 
+  ctx.redirect('http://localhost:8080/')
 })
 
 app
