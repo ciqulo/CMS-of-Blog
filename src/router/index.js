@@ -50,16 +50,16 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   if (!store.state.user.isValid) {
     console.log('no user found in store, start fetching')
-    store.dispatch({type: GET_USER_INFO}).then(({data, errors}) => {
-      console.log('fetched data:' + data + errors)
-      if (errors) throw errors
+    store.dispatch({type: GET_USER_INFO}).then(({data, code, msg}) => {
+      console.log('fetched data:' + JSON.stringify(data))
+      if (code != '200') throw msg
       store.commit(SET_USER, {
         ...data,
         isValid: true
       })
       next()
-    }).catch(() => {
-      console.log('eeeeeeee')
+    }).catch((e) => {
+      console.log(e)
       next({path: '/login'})
     })
   }
