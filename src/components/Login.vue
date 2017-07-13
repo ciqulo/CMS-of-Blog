@@ -62,19 +62,18 @@
           this.$notify.info({
             title: '提示',
             message: '用户名不能为空'
-          });
+          })
         } else if (!this.passWord) {
           this.$notify.info({
             title: '提示',
             message: '密码不能为空'
-          });
+          })
         } else {
           this.LOGIN({name: this.userName, password: this.passWord})
           setTimeout(() => {
             this.$store.dispatch('LOGIN')
             const userRep = this.user.user.user
             if (userRep.info !== '登录成功') {
-              console.log(userRep)
               this.$notify({
                 title: '警告',
                 message: userRep.info,
@@ -83,7 +82,6 @@
             } else {
               this.$router.push({path: '/'})
             }
-            console.log(this.user.user)
           }, 300)
 
         }
@@ -124,7 +122,6 @@
         font: {
           size: 1.5rem;
         }
-      ;
       }
       button {
         background: #31393e;
@@ -135,7 +132,6 @@
         margin: {
           top: 1rem;
         }
-      ;
         border-radius: .2rem;
       }
     }
@@ -145,7 +141,6 @@
         margin: {
           top: 3.1rem;
         }
-      ;
       }
     }
 
@@ -185,12 +180,10 @@
       border: {
         radius: .2rem;
       }
-    ;
       margin: {
         top: 3rem;
         right: 2rem;
       }
-    ;
       float: right;
     }
     .content-title {
