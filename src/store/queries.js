@@ -1,6 +1,6 @@
 export const LOGIN_QUERY =
-  `query user($name:String, $password:String) {
-    user(name:$name, password:$password){
+  `query user($username:String, $password:String) {
+    user(username:$username, password:$password){
       role,
       info
     }

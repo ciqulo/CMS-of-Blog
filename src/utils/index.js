@@ -1,17 +1,18 @@
-export function query(query, variables) {
+export async function query(query, variables) {
   return fetch('/graphql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    // credentials: 'include',
-    body: JSON.stringify({
-      query,
-      variables
-    })
+    credentials: 'include',
+    body: variables == null ? JSON.stringify({query}) : JSON.stringify({query, variables})
   }).then(res => {
     return res.json()
-  }).then(data => {
-    return data.data
+  }).then(({data, error}) => {
+    if (error) {
+      console.log(error)
+      return {error}
+    }
+    return {data}
   })
 }

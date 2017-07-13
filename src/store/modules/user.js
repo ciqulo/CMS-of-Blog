@@ -1,7 +1,8 @@
-import api from '../../api/user'
 import * as actionTypes from '../actionTypes'
 import * as mutationTypes from '../mutationTypes'
 import * as queries from '../queries'
+
+import {query} from '../../utils/'
 
 const state = {
   name: null,
@@ -11,28 +12,33 @@ const state = {
   lastLoginTime: null,
   ip: null,
   role: null,
-  user:{}
+  user: {}
 }
 
 const actions = {
   async [actionTypes.LOGIN] ({commit, state}, payload) {
-    commit(mutationTypes.SET_USER, await api.login(
-      queries.LOGIN_QUERY,
-      payload
-    ))
+    const result = await query(queries.LOGIN_QUERY, payload)
+    if (result.error) {
+
+    }
+    return result
+    // commit(mutationTypes.SET_USER, result)
   },
 
   async [actionTypes.GET_USER_INFO]({commit, state}, payload){
-    const result = await api.getUserInfo(queries.GET_USER_INFO_QUERY)
-
+    const result = await query(queries.GET_USER_INFO_QUERY)
     commit(mutationTypes.SET_USER, result)
+    return result
   }
 }
 
 const mutations = {
   [mutationTypes.SET_USER] (state, user) {
-    state.user = user
-    console.log(user)
+    console.log('user is setting:'+JSON.stringify(user))
+    state = {
+      ...user,
+      isValid: true,
+    }
   }
 }
 

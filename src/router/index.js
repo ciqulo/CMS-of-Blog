@@ -7,18 +7,15 @@ import Panel from '../components/Panel.vue'
 
 
 import store from '../store'
-import {GET_USER_INFO} from '../store/actionTypes'
+import {GET_USER_INFO, LOGIN} from '../store/actionTypes'
+import {SET_USER} from '../store/mutationTypes'
 const {state, actions} = store
-
-// console.log(state, actions)
-//
-// console.log(store)
-// console.log(store.state.user.isValid)
 
 Vue.use(Router)
 
 
 const router = new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -51,9 +48,20 @@ const router = new Router({
 
 
 router.beforeEach((to, from, next) => {
-
   if (!store.state.user.isValid) {
-    store.dispatch({type: GET_USER_INFO})
+    console.log('no user found in store, start fetching')
+    store.dispatch({type: GET_USER_INFO}).then(({data, errors}) => {
+      console.log('fetched data:' + data + errors)
+      if (errors) throw errors
+      store.commit(SET_USER, {
+        ...data,
+        isValid: true
+      })
+      next()
+    }).catch(() => {
+      console.log('eeeeeeee')
+      next({path: '/login'})
+    })
   }
 
   next()
