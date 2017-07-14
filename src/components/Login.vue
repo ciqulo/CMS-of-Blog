@@ -36,6 +36,7 @@
 <script>
   import {mapActions, mapState, mapMutations} from 'vuex'
   import {SET_USER} from '../store/mutationTypes'
+  import {LOGIN} from '../store/actionTypes'
   export default {
     data () {
       return {
@@ -74,7 +75,7 @@
           password: this.password
         }) || {}
 
-        if (code != '200') return this.$notify({
+        if (code !== 0) return this.$notify({
           title: '警告',
           message: msg,
           type: 'warning'
@@ -86,13 +87,9 @@
         })
         this.$router.push({path: '/'})
       },
-      ...mapActions(['LOGIN']),
+      ...mapActions([LOGIN]),
       ...mapMutations([SET_USER])
     },
-    computed: {
-//      ...mapState(['user'])
-    }
-
   }
 </script>
 <style lang="scss" scoped>

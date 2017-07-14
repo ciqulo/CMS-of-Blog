@@ -1,6 +1,6 @@
 import * as actionTypes from '../actionTypes'
 import * as mutationTypes from '../mutationTypes'
-import {login, loginWithCredentials} from '../../utils/login'
+import {login, logout, loginWithCredentials} from '../../utils/loginUtils'
 
 const state = {
   name: null,
@@ -20,14 +20,17 @@ const actions = {
 
   async [actionTypes.GET_USER_INFO](){
     return await loginWithCredentials()
+  },
+
+  async[actionTypes.LOGOUT](){
+    return await logout()
   }
 }
 
 const mutations = {
   [mutationTypes.SET_USER] (state, user) {
     console.log('user is setting:' + JSON.stringify(user))
-    state.role = user.role
-    state.isValid = user.isValid
+    for (const [key, value] of Object.entries(user)) state[key] = value
   }
 }
 

@@ -1,8 +1,11 @@
 const users = {
   'ciqu': {
-    password: '111',
     role: 'admin',
     ip: ''
+  },
+  'lmz': {
+    role: 'reckless',
+    ip: '223'
   }
 }
 

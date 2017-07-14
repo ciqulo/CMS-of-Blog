@@ -12,23 +12,43 @@
       <el-menu-item index="2-2">用户</el-menu-item>
       <el-menu-item index="2-3">标签</el-menu-item>
     </el-submenu>
+    <el-menu-item index="1" class="nav-home">
+      你好, {{user.name}}
+    </el-menu-item>
+    <el-menu-item index="1" class="nav-home" @click="logout">
+      登出
+    </el-menu-item>
   </el-menu>
-
-
 </template>
 
 <script>
+  import {mapState, mapActions, mapMutations} from 'vuex'
+  import {LOGOUT} from '../../store/actionTypes'
 
+  import {SET_USER} from '../../store/mutationTypes'
   export default {
     data() {
       return {
         activeIndex: '0',
-      };
+      }
     },
     methods: {
       handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      }
+        console.log(key, keyPath)
+      },
+      async logout(){
+        const {code, msg} = await this.LOGOUT() || {}
+        if (code == 0) {
+          this.$router.push('/login')
+          this.SET_USER({isValid: null})
+        }
+        else this.$message.error(msg)
+      },
+      ...mapActions([LOGOUT]),
+      ...mapMutations([SET_USER])
+    },
+    computed: {
+      ...mapState(['user'])
     }
   }
 </script>

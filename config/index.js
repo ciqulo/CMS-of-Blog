@@ -29,7 +29,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/graphql': 'http://localhost:3000',
-      '/api/login': 'http://localhost:3000'
+      '/api/login': 'http://localhost:3000',
+      '/api/logout': 'http://localhost:3000',
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

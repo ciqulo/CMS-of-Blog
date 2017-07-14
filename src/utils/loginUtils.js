@@ -22,3 +22,15 @@ export async function loginWithCredentials() {
     return res.json({})
   })
 }
+
+export async function logout() {
+  return fetch('/api/logout', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  }).then(res => {
+    return res.json({})
+  })
+}
