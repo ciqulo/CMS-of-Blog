@@ -68,6 +68,7 @@
       async doLogin(){
 
         const isValid = this.checkForm()
+        console.log(!isValid)
         if (!isValid) return
 
         const {msg, data, code} = await this.LOGIN({
