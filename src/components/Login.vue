@@ -70,16 +70,21 @@
         console.log(!isValid)
         if (!isValid) return
 
-        const result = await this.LOGIN({username: this.username, password: this.password})
-        const {errors, data} = result
+        const {msg, data, code} = await this.LOGIN({
+          username: this.username,
+          password: this.password
+        }) || {}
 
-        if (errors) return this.$notify({
+        if (code != '200') return this.$notify({
           title: '警告',
-          message: JSON.stringify(errors),
+          message: msg,
           type: 'warning'
         })
 
-        this.SET_USER(data)
+        this.SET_USER({
+          isValid: true,
+          ...data
+        })
         this.$router.push({path: '/'})
       },
       ...mapActions(['LOGIN']),
