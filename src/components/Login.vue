@@ -67,6 +67,7 @@
       async doLogin(){
 
         const isValid = this.checkForm()
+        console.log(!isValid)
         if (!isValid) return
 
         const result = await this.LOGIN({username: this.username, password: this.password})
