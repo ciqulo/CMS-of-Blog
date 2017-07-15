@@ -11,6 +11,7 @@
     "theme": "et"
   },
   "dependencies": {
+    "atob": "^2.0.3",
     "graphql": "^0.10.3",
     "kcors": "2",
     "koa": "^2.3.0",
@@ -19,6 +20,7 @@
     "koa-router": "^7.2.1",
     "koa-session": "^5.4.0",
     "koa-static": "^4.0.1",
+    "mysql": "^2.13.0",
     "vue": "^2.2.2",
     "vue-router": "^2.3.0",
     "vuex": "^2.3.0",

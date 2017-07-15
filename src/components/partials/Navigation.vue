@@ -25,7 +25,6 @@
   import {mapState, mapActions, mapMutations} from 'vuex'
   import {LOGOUT} from '../../store/actionTypes'
 
-  import {SET_USER} from '../../store/mutationTypes'
   export default {
     data() {
       return {
@@ -38,14 +37,10 @@
       },
       async logout(){
         const {code, msg} = await this.LOGOUT() || {}
-        if (code == 0) {
-          this.$router.push('/login')
-          this.SET_USER({isValid: null})
-        }
+        if (code == 0) this.$router.replace('/login')
         else this.$message.error(msg)
       },
       ...mapActions([LOGOUT]),
-      ...mapMutations([SET_USER])
     },
     computed: {
       ...mapState(['user'])

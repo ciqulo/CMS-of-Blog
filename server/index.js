@@ -14,9 +14,9 @@ const CONFIG = {
   key: 'koa:session',
   maxAge: 86400000,
   overwrite: true,
-  httpOnly: true,
+  httpOnly: false,
   signed: true,
-  rolling: false,
+  rolling: true,
 }
 
 app
