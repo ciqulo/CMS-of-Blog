@@ -10,26 +10,24 @@
         <button @click="isSigningUp=true">登录</button>
       </div>
     </div>
-    <div :class="[{'sign-up-state':isSigningUp === true},{'login-state':isSigningUp === false}]">
+    <div :class="isSigningUp ? 'sign-up-state' :'login-state' ">
       <div class="content-title">
-        <span v-show="isSigningUp === false">SIGN UP</span>
-        <span v-show="isSigningUp === true">LOGIN IN</span>
+        <span>{{isSigningUp ? 'LOGIN IN' : 'SIGN UP'}}</span>
       </div>
       <div class="signMain">
         <div class="fullName">
-          <input v-if="isSigningUp === false" v-model="fullName" type="text" placeholder="FullName"/>
+          <input v-show="isSigningUp === false" v-model="fullName" type="text" placeholder="姓名"/>
         </div>
         <div class="Email">
-          <input type="email" v-model="username" placeholder="E-mail"/>
+          <input type="email" v-model="username" placeholder="用户名"/>
         </div>
         <div class="passWord">
-          <input type="password" v-model="password" autocomplete="new-password" placeholder="Password"/>
+          <input type="password" v-model="password" autocomplete="new-password" placeholder="密码"/>
         </div>
       </div>
       <button v-if="isSigningUp === false" class="signBtn" @click="signUp">SIGN UP</button>
       <button v-if="isSigningUp === true" class="signBtn" @click="doLogin">LOGIN IN</button>
     </div>
-
   </div>
 </template>
 
@@ -53,22 +51,12 @@
 
       checkForm(){
         let isValid = false
-        if (!this.username) this.$notify.info({
-          title: '提示',
-          message: '用户名不能为空'
-        })
-
-        if (!this.password) this.$notify.info({
-          title: '提示',
-          message: '密码不能为空'
-        })
-
-        return true
+        if (!this.username) this.$notify.info({title: '提示', message: '用户名不能为空'})
+        if (!this.password) this.$notify.info({title: '提示', message: '密码不能为空', offset: 90})
+        return isValid
       },
       async doLogin(){
-
         const isValid = this.checkForm()
-        console.log(!isValid)
         if (!isValid) return
 
         const {msg, data, code} = await this.LOGIN({
@@ -76,16 +64,8 @@
           password: this.password
         }) || {}
 
-        if (code !== 0) return this.$notify({
-          title: '警告',
-          message: msg,
-          type: 'warning'
-        })
-
-        this.SET_USER({
-          isValid: true,
-          ...data
-        })
+        if (code !== 0) return this.$notify({title: '警告', message: msg, type: 'warning'})
+        this.SET_USER({isValid: true, ...data})
         this.$router.push({path: '/'})
       },
       ...mapActions([LOGIN]),
@@ -105,101 +85,77 @@
   }
 
   .content {
+    display: flex;
     margin: 10% auto;
     width: 70%;
-    height: 20rem;
+    height: 320px;
     background: #31393e;
-    display: flex;
-    .signUp {
+    .signUp, .loginIn {
       flex: 1;
+      margin: 48px 0 0 10%;
       color: #babdbd;
-      margin-top: 3rem;
-      margin-left: 10%;
       div {
         text-align: left;
         width: 90%;
-        font: {
-          size: 1.5rem;
-        }
+        font-size: 24px;
       }
       button {
+        margin-top: 16px;
+        border-radius: 3.2px;
+        width: 105px;
+        height: 32px;
+        outline: none;
+        color: #babdbd;
         background: #31393e;
         border: 1px solid #babdbd;
-        color: #babdbd;
-        width: 6.5rem;
-        height: 2rem;
-        margin: {
-          top: 1rem;
-        }
-        border-radius: .2rem;
       }
     }
-    .loginIn {
-      @extend .signUp;
-      button {
-        margin: {
-          top: 3.1rem;
-        }
-      }
-    }
-
   }
 
   .login-state {
     position: absolute;
-    margin: auto;
-    height: 25rem;
-    width: 30%;
     top: 12%;
     left: 20%;
-    background: #fff;
+    margin: auto;
+    height: 400px;
+    width: 30%;
     transition: all .475s;
-    transform: translate3d(0, 0, 0);
+    transform: translateX(0);
+    background: #fff;
     .signMain {
       .fullName, .Email, .passWord {
+        margin: 32px 0 0 10%;
         width: 80%;
-        margin: {
-          left: 10%;
-          top: 2rem;
-        }
         input {
           width: 100%;
-          height: 2.5rem;
+          height: 40px;
           border-bottom: 1px solid #d9d9d9;
+          outline: none;
           background: #fff;
         }
       }
     }
     .signBtn {
-      background: #009cfe;
-      color: #fff;
-      border: none;
-      width: 7.5rem;
-      height: 2rem;
-      border: {
-        radius: .2rem;
-      }
-      margin: {
-        top: 3rem;
-        right: 2rem;
-      }
       float: right;
+      margin: 48px 32px 0 0;
+      width: 120px;
+      height: 32px;
+      border: none;
+      border-radius: 3.2px;
+      outline: none;
+      color: #fff;
+      background: #009cfe;
     }
     .content-title {
+      margin: 32px 0 0 33.6px;
+      font-size: 24px;
+      font-weight: 300;
       color: #009cfe;
-      margin: {
-        top: 2rem;
-        left: 2.1rem;
-      }
-      font: {
-        size: 1.5rem;
-        weight: 300;
-      }
     }
   }
 
   .sign-up-state {
     @extend .login-state;
-    transform: translate3d(100%, 0, 0);
+    transform: translateX(100%);
   }
 </style>
