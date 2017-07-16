@@ -14,6 +14,23 @@ router.get('/login', async (ctx) => {
   ctx.body = html
 })
 
+router.get('/graphql', graphqlHTTP({
+  schema,
+  graphiql: true,
+  rootValue,
+}))
+
+router.post('/graphql', async (ctx, next) => {
+  if (!ctx.session.username) return
+  await next()
+})
+
+router.post('/graphql', graphqlHTTP({
+  schema,
+  graphiql: true,
+  rootValue,
+}))
+
 router.get('*', async (ctx, next) => {
   if (ctx.path.startsWith('/static')) return await next()
   if (!ctx.session.username) return ctx.redirect('/login')
@@ -61,10 +78,5 @@ router.post('/api/logout', async (ctx) => {
   ctx.body = getErrorInfo(0)
 })
 
-router.post('/graphql', graphqlHTTP({
-  schema,
-  graphiql: true,
-  rootValue,
-}))
 
 module.exports = router
