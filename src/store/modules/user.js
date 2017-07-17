@@ -3,13 +3,11 @@ import * as mutationTypes from '../mutationTypes'
 import {login, logout, loginWithCredentials} from '../../utils/loginUtils'
 
 const state = {
-  name: null,
-  nickname: null,
   isValid: false,
-  token: null,
-  lastLoginTime: null,
-  ip: null,
+  username: null,
   role: null,
+  userUrl: null,
+  userEmail: null,
 }
 
 const actions = {

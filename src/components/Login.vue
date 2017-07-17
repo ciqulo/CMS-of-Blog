@@ -50,7 +50,7 @@
       },
 
       checkForm(){
-        let isValid = false
+        let isValid = true
         if (!this.username) this.$notify.info({title: '提示', message: '用户名不能为空'})
         if (!this.password) this.$notify.info({title: '提示', message: '密码不能为空', offset: 90})
         return isValid

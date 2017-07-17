@@ -1,62 +1,34 @@
 const mysql = require('mysql')
 
-// const connection = mysql.createConnection({
-//   host: 'localhost',
-//   user: 'ciqu',
-//   password: '2211',
-//   database: 'vwp'
-// })
-//
-// connection.connect()
-// // const i = `INSERT INTO vwp.vwp_users (user_name, user_pass, user_email, user_url) VALUES ('ciqu', '2211', 'a@b.com', 'y.com');`
-// // connection.query(i, function (error, results, fields) {
-// //   if (error) throw error
-// //   console.log('The solution is: ',results, fields)
-// // })
-// const i = `SELECT * FROM vwp.vwp_users `
+const cnt = mysql.createConnection({
+  host: 'localhost',
+  user: 'ciqu',
+  password: '2211',
+  database: 'vwp'
+})
+
+cnt.connect()
+// const i = `INSERT INTO vwp.vwp_users (user_name, user_pass, user_email, user_url) VALUES ('ciqu', '2211', 'a@b.com', 'y.com');`
 // connection.query(i, function (error, results, fields) {
 //   if (error) throw error
-//   console.log('The solution is: ',results)
+//   console.log('The solution is: ',results, fields)
 // })
-//
-//
-//
-// connection.end()
+
+const userQuery = name => `SELECT * FROM vwp.vwp_users WHERE user_name='${name}'`
 
 
-const users = {
-  'ciqu': {
-    role: 'admin',
-    ip: ''
-  },
-  'lmz': {
-    role: 'reckless',
-    ip: '223'
-  }
-}
+const getUser = async name => new Promise((resolve, reject) => {
 
-const secrets = {
-  'ciqu': '111'
-}
-
-
-const getUserInfo = async function (name) {
-  return new Promise(resolve => {
-    setTimeout(function () {
-      resolve(users[name])
-    }, 100)
+  cnt.query(userQuery(name), function (error, result) {
+    // TODO
+    if (error) reject(error)
+    resolve(result && result.length == 1 ? result[0] : null)
   })
-}
 
-const getUserSecrets = async function (name) {
-  return new Promise(resolve => {
-    setTimeout(function () {
-      resolve(secrets[name])
-    }, 100)
-  })
-}
+})
 
 module.exports = {
-  getUserInfo,
-  getUserSecrets
+  getUser
 }
+
+// cnt.end()

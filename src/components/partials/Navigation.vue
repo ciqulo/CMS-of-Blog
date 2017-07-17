@@ -13,7 +13,7 @@
       <el-menu-item index="2-3">标签</el-menu-item>
     </el-submenu>
     <el-menu-item index="1" class="nav-home">
-      你好, {{user.name}}
+      你好, {{user.username}}
     </el-menu-item>
     <el-menu-item index="1" class="nav-home" @click="logout">
       登出
