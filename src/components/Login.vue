@@ -117,8 +117,8 @@
     top: 12%;
     left: 20%;
     margin: auto;
-    height: 400px;
     width: 30%;
+    height: 400px;
     transition: all .475s;
     transform: translateX(0);
     background: #fff;
