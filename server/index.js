@@ -20,7 +20,10 @@ const CONFIG = {
 }
 
 app
-  .use(bodyParser())
+  .use(bodyParser({
+    enableTypes: ['json', 'form', 'text'],
+    extendTypes: {text: 'application/graphql'}
+  }))
   .use(session(CONFIG, app))
   .use(cors({credentials: true}))
   .use(router.routes())

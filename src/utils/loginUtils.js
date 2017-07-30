@@ -1,62 +1,30 @@
 import {getCookie} from './cookieUtils'
+import {request} from './index'
 import SHA256 from 'crypto-js/sha256'
 import atob from 'atob'
 
 export async function login({username, password}) {
 
   const result = await getSalt(username) || {}
-  if (result.code != 0) return result
+  if (result.code != 200) return result
   const cookie = getCookie('koa:session') || ''
   const {salt, token} = JSON.parse(atob(cookie) || '{}')
 
+  // 传输的密码 = SHA256(token + SHA256(salt + password))
+  // token 是临时的，每一次login请求得到一个 用于防止传输后加密的密码从而重放攻击
   let pass = SHA256(salt + password).toString()
   pass = SHA256(token + pass).toString()
-  return fetch('/api/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify({username, password: pass})
-  }).then(res => {
-    return res.json({})
-  })
+  return request('/api/login', {username, password: pass})
 }
 
 export async function loginWithCredentials() {
-  return fetch('/api/loginWithCredentials', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-  }).then(res => {
-    return res.json({})
-  })
+  return request('/api/loginWithCredentials')
 }
 
 export async function logout() {
-  return fetch('/api/logout', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-  }).then(res => {
-    return res.json({})
-  })
+  return request('/api/logout')
 }
 
-
 async function getSalt(username) {
-  return fetch('/api/token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify({username})
-  }).then(res => {
-    return res.json({})
-  })
+  return request('/api/token', {username})
 }

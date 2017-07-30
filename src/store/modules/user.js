@@ -3,7 +3,6 @@ import * as mutationTypes from '../mutationTypes'
 import {login, logout, loginWithCredentials} from '../../utils/loginUtils'
 
 const state = {
-  isValid: false,
   username: null,
   role: null,
   userUrl: null,
@@ -13,11 +12,16 @@ const state = {
 const actions = {
   async [actionTypes.LOGIN] ({commit, state}, payload) {
     const {username, password} = payload
-    return await login({username, password})
+    const {code, message, data} = await login({username, password})
+    if (code == 200) commit(mutationTypes.SET_USER, data)
+    return {code, message}
   },
 
-  async [actionTypes.GET_USER_INFO](){
-    return await loginWithCredentials()
+  async [actionTypes.GET_USER_INFO]({commit, state}){
+    const {code, message, data} = await loginWithCredentials()
+    console.log(code, message, data)
+    if (code == 200) commit(mutationTypes.SET_USER, data)
+    return {code, message}
   },
 
   async[actionTypes.LOGOUT](){

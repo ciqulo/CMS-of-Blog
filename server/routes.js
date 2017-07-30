@@ -41,7 +41,7 @@ router.get('*', async (ctx, next) => {
   ctx.body = html
 })
 
-
+// 登录时请求临时的token
 router.post('/api/token', async ctx => {
 
   const {username} = ctx.request.body || {}
@@ -53,7 +53,7 @@ router.post('/api/token', async ctx => {
   ctx.session.token = token
   ctx.session.salt = user.user_salt
 
-  ctx.body = getErrorInfo(0)
+  ctx.body = getErrorInfo(200)
 
 })
 
@@ -75,7 +75,7 @@ router.post('/api/loginWithCredentials', async ctx => {
     userUrl: user.user_url,
   }
 
-  return ctx.body = Object.assign(userInfo, getErrorInfo(0))
+  return ctx.body = Object.assign({data: userInfo}, getErrorInfo(200))
 
 })
 
@@ -111,7 +111,7 @@ router.post('/api/login', async ctx => {
     ctx.session.username = username
     ctx.session.token = null
     ctx.session.salt = null
-    return ctx.body = Object.assign(userInfo, getErrorInfo(0))
+    return ctx.body = Object.assign({data: userInfo}, getErrorInfo(200))
   }
 
   ctx.body = getErrorInfo(4004)
@@ -125,7 +125,7 @@ router.post('/api/logout', async (ctx) => {
 
   ctx.session.username = null
 
-  ctx.body = getErrorInfo(0)
+  ctx.body = getErrorInfo(200)
 })
 
 

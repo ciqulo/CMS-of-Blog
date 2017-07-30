@@ -36,9 +36,9 @@
         console.log(key, keyPath)
       },
       async logout(){
-        const {code, msg} = await this.LOGOUT() || {}
-        if (code == 0) this.$router.replace('/login')
-        else this.$message.error(msg)
+        const {code, message} = await this.LOGOUT() || {}
+        if (code == 200) this.$router.replace('/login')
+        else this.$message.error(message)
       },
       ...mapActions([LOGOUT]),
     },

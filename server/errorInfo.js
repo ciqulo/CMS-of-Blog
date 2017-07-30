@@ -1,6 +1,7 @@
 const MAP = {
   '-1': 'Internal Error',
-  '0': 'success',
+  0: 'success',
+  200: 'success',
 
   // 登录状态码
   4001: '无登录信息',
@@ -19,6 +20,6 @@ const MAP = {
 module.exports = function getErrorCode(code) {
   return {
     code,
-    msg: MAP[code]
+    message: MAP[code]
   }
 }
