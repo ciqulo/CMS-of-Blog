@@ -3,7 +3,7 @@ const mysql = require('mysql')
 const cnt = mysql.createConnection({
   host: 'localhost',
   user: 'ciqu',
-  password: '2211',
+  password: '2211ciqu',
   database: 'vwp'
 })
 
