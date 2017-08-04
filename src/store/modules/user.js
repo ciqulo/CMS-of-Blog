@@ -13,13 +13,13 @@ const actions = {
   async [actionTypes.LOGIN] ({commit, state}, payload) {
     const {username, password} = payload
     const {code, message, data} = await login({username, password}) || {}
-    if (code == 200) commit(mutationTypes.SET_USER, data)
+    if (code === 200) commit(mutationTypes.SET_USER, data)
     return {code, message}
   },
 
   async [actionTypes.GET_USER_INFO]({commit, state}){
     const {code, message, data} = await loginWithCredentials() || {}
-    if (code == 200) commit(mutationTypes.SET_USER, data)
+    if (code === 200) commit(mutationTypes.SET_USER, data)
     return {code, message}
   },
 
