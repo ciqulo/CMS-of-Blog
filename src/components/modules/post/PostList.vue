@@ -4,12 +4,12 @@
       <el-date-picker v-model="timeRange" type="daterange" placeholder="选择日期范围">
       </el-date-picker>
       <el-select v-model="value" placeholder="请选择分类">
-        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+        <el-option v-for="item in dataList.optionsList" :key="item.value" :label="item.label" :value="item.value">
         </el-option>
       </el-select>
     </div>
     <div class="content-state">
-      <el-table :data="testData" @selection-change="handleSelectionChange">
+      <el-table :data="dataList.postList" @selection-change="handleSelectionChange">
         <el-table-column type="selection">
         </el-table-column>
         <el-table-column prop="title" label="标题">
@@ -34,15 +34,14 @@
 </template>
 
 <script>
-  import {mapActions} from 'vuex'
-  import {GET_POST_LIST} from '../../../store/actionTypes'
+  import {mapState} from 'vuex'
   export default {
     name: 'hello',
     data () {
       return {
         timeRange: '',
         testData: [],
-        options:[],
+        options: [],
         value: ''
       }
     },
@@ -54,13 +53,15 @@
         this.multipleSelection = val;
       },
       async getPost(){
-        const {postList,optionsList} = await this.GET_POST_LIST()
-        this.testData = postList
-        this.options = optionsList
-      },
-      ...mapActions([GET_POST_LIST])
+        await this.$store.dispatch('GET_POST_LIST')
+      }
     },
-    components: {}
+    components: {},
+    computed: {
+      ...mapState({
+        dataList: state => state.post.dataList
+      })
+    }
   }
 </script>
 <style lang="scss">

@@ -1,12 +1,14 @@
 import * as actionTypes from '../actionTypes'
 import * as mutationTypes from '../mutationTypes'
 
-const state = {}
+const state = {
+  dataList: {}
+}
 
 const actions = {
   async[actionTypes.GET_POST_LIST]({commit}){
     return new Promise((resolve) => {
-      setTimeout(() => {
+      // setTimeout(() => {
         const data = {
           postList: [
             {title: 'CMS', author: 'ycwalker', classification: '技术', tag: 'Vue', date: '2017-08-01'},
@@ -19,13 +21,17 @@ const actions = {
             {label: 'vue', value: 4}
           ]
         }
-        resolve(data)
-      }, 1000)
+        commit(actionTypes.GET_POST_LIST, data)
+      // }, 1000)
     })
   }
 }
 
-const mutations = {}
+const mutations = {
+  [actionTypes.GET_POST_LIST](state, data){
+    state.dataList = data
+  }
+}
 
 export default {
   state,
