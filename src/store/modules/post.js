@@ -1,35 +1,23 @@
 import * as actionTypes from '../actionTypes'
-import * as mutationTypes from '../mutationTypes'
+import {SET_POST_LIST} from '../mutationTypes'
+
+import {postsQuery} from '../queries'
+import {query} from "../../utils/index"
 
 const state = {
-  dataList: {}
+  postLists:[]
 }
 
 const actions = {
-  async[actionTypes.GET_POST_LIST]({commit}){
-    return new Promise((resolve) => {
-      // setTimeout(() => {
-        const data = {
-          postList: [
-            {title: 'CMS', author: 'ycwalker', classification: '技术', tag: 'Vue', date: '2017-08-01'},
-            {title: '如何实现前端服务化', author: 'Reckless', classification: '技术', tag: 'Javascript,Vue', date: '2017-08-01'}
-          ],
-          optionsList: [
-            {label: '技术博客', value: 1},
-            {label: '技术分享', value: 2},
-            {label: 'cms', value: 3},
-            {label: 'vue', value: 4}
-          ]
-        }
-        commit(actionTypes.GET_POST_LIST, data)
-      // }, 1000)
-    })
+  async [actionTypes.GET_POST_LIST]({commit}) {
+    const result = await query(postsQuery)
+    console.log(result)
   }
 }
 
 const mutations = {
-  [actionTypes.GET_POST_LIST](state, data){
-    state.dataList = data
+  [SET_POST_LIST](state, data) {
+    state.postLists = data
   }
 }
 

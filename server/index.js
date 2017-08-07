@@ -5,6 +5,7 @@ const bodyParser = require('koa-bodyparser')
 const serve = require('koa-static')
 
 const router = require('./routes')
+const responseFormatter = require('./middlewares/response_formatter')
 
 const app = new Koa()
 
@@ -24,6 +25,7 @@ app
     enableTypes: ['json', 'form', 'text'],
     extendTypes: {text: 'application/graphql'}
   }))
+  .use(responseFormatter())
   .use(session(CONFIG, app))
   .use(cors({credentials: true}))
   .use(router.routes())

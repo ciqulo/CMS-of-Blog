@@ -35,9 +35,10 @@
 
 <script>
   import {mapState} from 'vuex'
+
   export default {
     name: 'hello',
-    data () {
+    data() {
       return {
         timeRange: '',
         testData: [],
@@ -45,14 +46,14 @@
         value: ''
       }
     },
-    mounted(){
+    created() {
       this.getPost()
     },
     methods: {
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
-      async getPost(){
+      async getPost() {
         await this.$store.dispatch('GET_POST_LIST')
       }
     },

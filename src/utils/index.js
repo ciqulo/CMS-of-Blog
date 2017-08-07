@@ -2,11 +2,10 @@ export async function query(query, variables) {
   return fetch('/graphql', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      // 'Content-Type': 'application/graphql',
+      'Content-Type': 'application/graphql',
     },
     credentials: 'include',
-    body: variables == null ? JSON.stringify({query}) : JSON.stringify({query, variables})
+    body: query
   })
     .then(res => {
       if (res.status >= 200 && res.status < 300) return res

@@ -14,3 +14,15 @@ export const GET_USER_INFO_QUERY =
     }
 }`
 
+export const postsQuery =
+`
+{
+	posts{
+		id,
+		postContent,
+		postTitle,
+		postAuthor,
+		postDate,
+	}
+}
+`

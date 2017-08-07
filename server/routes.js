@@ -6,9 +6,13 @@ const rndString = require('randomstring')
 const SHA256 = require('crypto-js/sha256')
 
 const schema = require('./schema')
-const rootValue = require('./rootValue')
 const getErrorInfo = require('./errorInfo')
-const {getUser} = require('./db')
+const connect = require('./db')
+
+const getUser = name => connect.then(async connect => {
+  const result = await connect.query(`SELECT * FROM vwp.vwp_users WHERE user_name='${name}'`)
+  return result && result.length == 1 ? result[0] : null
+})
 
 const userTokens = {}
 
@@ -21,18 +25,16 @@ router.get('/login', async (ctx) => {
 router.get('/graphql', graphqlHTTP({
   schema,
   graphiql: true,
-  rootValue,
 }))
 
 router.post('/graphql', async (ctx, next) => {
-  if (!ctx.session.username) return
+  // if (!ctx.session.username) return
   await next()
 })
 
 router.post('/graphql', graphqlHTTP({
   schema,
   graphiql: true,
-  rootValue,
 }))
 
 router.get('*', async (ctx, next) => {

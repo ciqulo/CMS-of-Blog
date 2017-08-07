@@ -1,31 +1,16 @@
-const mysql = require('mysql')
-
-const cnt = mysql.createConnection({
-  host: 'localhost',
-  user: 'ciqu',
-  password: '2211',
-  database: 'vwp'
-})
-
-cnt.connect()
-
-cnt.query('SELECT * FROM vwp.vwp_users', function (error, result) {
-  // console.log(result)
-  if (!error) process.exit(0)
-})
-
-
-const sql = `
+`
 create table vwp.vwp_posts
 (
 	ID bigint auto_increment
 		primary key,
-	post_author bigint null,
+	post_author varchar(60) null,
 	post_content longtext null,
 	post_title text null,
 	post_date datetime null,
 	post_modified datetime null,
-	post_type varchar(20) null
+	post_type varchar(20) null,
+	post_category varchar(60) null,
+	post_tag varchar(60) null
 )
 ;
 
@@ -45,18 +30,18 @@ create table vwp.vwp_users
 )
 ;
 
-alter table vwp_posts
-	add constraint post_author_user_ID_fk
-		foreign key (post_author) references vwp.vwp_users (ID)
-;
-
-INSERT INTO vwp.vwp_users (user_name, user_pass, user_email, user_url, user_salt) VALUES ('yc', '42fc7ff2996f7f313b364c69233eb2e54f06a921a258fb5ac83122fc33c52031', null, null, 'kOk4oS93EW1oz9Sgcp3EYCf4S4jzpv');
-
 `
 
-cnt.query(sql, function (error, results, fields) {
-  if (error) return console.log(error)
-  console.log('success')
-})
 
-// cnt.end()
+
+
+`
+INSERT INTO vwp.vwp_posts (post_author, post_content, post_title, post_date, post_modified, post_type, post_category, post_tag) VALUES ('yc', 'This is the sample content', 'the sample title', '2017-08-07 16:24:58', null, 'reckless', 'default category', 'default tag');
+`
+
+
+`
+INSERT INTO vwp.vwp_users (user_name, user_pass, user_email, user_url, user_salt) VALUES ('ef', 'vr', 'erf', 'we', null);
+INSERT INTO vwp.vwp_users (user_name, user_pass, user_email, user_url, user_salt) VALUES ('ciqu', '2211', 'a@b.com', 'y.com', null);
+INSERT INTO vwp.vwp_users (user_name, user_pass, user_email, user_url, user_salt) VALUES ('yc', '42fc7ff2996f7f313b364c69233eb2e54f06a921a258fb5ac83122fc33c52031', null, null, 'kOk4oS93EW1oz9Sgcp3EYCf4S4jzpv');
+`
