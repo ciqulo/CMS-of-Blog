@@ -37,6 +37,14 @@ const postType = new GraphQLObjectType({
     postModified: {
       sqlColumn: 'post_modified',
       type: GraphQLString,
+    },
+    postCategory: {
+      sqlColumn: 'post_category',
+      type: GraphQLString,
+    },
+    postTag: {
+      sqlColumn: 'post_tag',
+      type: GraphQLString,
     }
   })
 })

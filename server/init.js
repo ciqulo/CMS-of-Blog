@@ -37,6 +37,8 @@ create table vwp.vwp_users
 
 `
 INSERT INTO vwp.vwp_posts (post_author, post_content, post_title, post_date, post_modified, post_type, post_category, post_tag) VALUES ('yc', 'This is the sample content', 'the sample title', '2017-08-07 16:24:58', null, 'reckless', 'default category', 'default tag');
+INSERT INTO vwp.vwp_posts (post_author, post_content, post_title, post_date, post_modified, post_type, post_category, post_tag) VALUES ('ciqu', 'sample 2', 'sample2', '2017-08-07 22:49:42', '2017-09-09 14:49:57', null, 'default category', 'default tag');
+INSERT INTO vwp.vwp_posts (post_author, post_content, post_title, post_date, post_modified, post_type, post_category, post_tag) VALUES ('yc', 'sample 3', 'sample 3', '2017-08-02 22:54:12', null, 'that', 'that', 'that tag');
 `
 
 

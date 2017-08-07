@@ -30,7 +30,6 @@ const actions = {
 
 const mutations = {
   [mutationTypes.SET_USER] (state, user) {
-    console.log('user is setting:' + JSON.stringify(user))
     for (const [key, value] of Object.entries(user)) state[key] = value
   }
 }

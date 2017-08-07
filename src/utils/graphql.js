@@ -1,11 +1,11 @@
-export async function request(path, payload) {
-  return fetch(path, {
+export default async function graphql(query) {
+  return fetch('/graphql', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/graphql',
     },
     credentials: 'include',
-    body: JSON.stringify(payload)
+    body: query
   })
     .then(res => {
       if (res.status >= 200 && res.status < 300) return res
