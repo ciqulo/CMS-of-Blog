@@ -1,4 +1,6 @@
-export const postLists =
+import graphql from '../utils/graphql'
+
+export const fetchPostList = () => graphql(
   `
 {
 	posts{
@@ -11,4 +13,19 @@ export const postLists =
 		postTag
 	}
 }
-`
+`)
+
+export const fetchPost = id => graphql(
+  `
+{
+	posts(id:"${id}"){
+		id,
+		postContent,
+		postTitle,
+		postAuthor,
+		postDate,
+		postCategory,
+		postTag
+	}
+}
+`)

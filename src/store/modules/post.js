@@ -3,8 +3,7 @@ import {SET_POST_LIST} from '../mutationTypes'
 import {POST_LISTS, POST_CATEGORIES, POST_TAGS} from "../getterNames"
 import moment from 'moment'
 
-import {postLists} from '../../service'
-import graphql from "../../utils/graphql"
+import {fetchPostList, fetchPost} from '../../service'
 
 const state = {
   postList: []
@@ -12,7 +11,7 @@ const state = {
 
 const actions = {
   async [actionTypes.GET_POST_LIST]({commit}) {
-    const {code, message, data} = await graphql(postLists)
+    const {code, message, data} = await fetchPostList()
     if (code == 200) commit(SET_POST_LIST, data.posts)
     return {code, message}
   }
