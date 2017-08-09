@@ -31,22 +31,16 @@
         value: ''
       }
     },
-    mounted(){
-      this.getReady();
-    },
     computed: {
       compiledMarkdown: function () {
-        console.log(marked(this.input))
         return marked(this.input)
       },
       ...mapGetters([POST_CATEGORIES])
     },
     methods: {
-      update: _.debounce(function (e) {
+      update: _.debounce((e) => {
         this.input = e.target.value
       }, 300),
-      getReady(){
-      }
     },
     components: {},
   }
