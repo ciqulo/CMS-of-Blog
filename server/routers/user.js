@@ -1,13 +1,9 @@
-const path = require('path')
-const fs = require('fs')
 const router = require('koa-router')()
-const graphqlHTTP = require('koa-graphql')
 const rndString = require('randomstring')
 const SHA256 = require('crypto-js/sha256')
 
-const schema = require('./schema')
-const getErrorInfo = require('./errorInfo')
-const connect = require('./db')
+const getErrorInfo = require('../errorInfo')
+const connect = require('../db')
 
 const getUser = name => connect.then(async connect => {
   const result = await connect.query(`SELECT * FROM vwp.vwp_users WHERE user_name='${name}'`)
@@ -16,35 +12,8 @@ const getUser = name => connect.then(async connect => {
 
 const userTokens = {}
 
-const html = fs.readFileSync(path.resolve('../dist/index.html')).toString()
-
-router.get('/login', async (ctx) => {
-  ctx.body = html
-})
-
-router.get('/graphql', graphqlHTTP({
-  schema,
-  graphiql: true,
-}))
-
-router.post('/graphql', async (ctx, next) => {
-  // if (!ctx.session.username) return
-  await next()
-})
-
-router.post('/graphql', graphqlHTTP({
-  schema,
-  graphiql: true,
-}))
-
-router.get('*', async (ctx, next) => {
-  if (ctx.path.startsWith('/static')) return await next()
-  if (!ctx.session.username) return ctx.redirect('/login')
-  ctx.body = html
-})
-
 // 登录时请求临时的token
-router.post('/api/token', async ctx => {
+router.post('/api/user/token', async ctx => {
 
   const {username} = ctx.request.body || {}
 
@@ -60,7 +29,7 @@ router.post('/api/token', async ctx => {
 })
 
 // session 登录
-router.post('/api/loginWithCredentials', async ctx => {
+router.post('/api/user/loginWithCredentials', async ctx => {
 
   const username = ctx.session.username
   // 无登录信息
@@ -82,7 +51,7 @@ router.post('/api/loginWithCredentials', async ctx => {
 })
 
 // 表单提交登录
-router.post('/api/login', async ctx => {
+router.post('/api/user/login', async ctx => {
 
   const {username, password} = ctx.request.body
 
@@ -120,7 +89,7 @@ router.post('/api/login', async ctx => {
 })
 
 
-router.post('/api/logout', async (ctx) => {
+router.post('/api/user/logout', async (ctx) => {
 
   // 无登录信息
   if (!ctx.session.username) return ctx.body = getErrorInfo(4005)
@@ -129,6 +98,5 @@ router.post('/api/logout', async (ctx) => {
 
   ctx.body = getErrorInfo(200)
 })
-
 
 module.exports = router

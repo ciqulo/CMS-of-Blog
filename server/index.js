@@ -4,7 +4,7 @@ const session = require('koa-session')
 const bodyParser = require('koa-bodyparser')
 const serve = require('koa-static')
 
-const router = require('./routes')
+const routers = require('./routers')
 const responseFormatter = require('./middlewares/response_formatter')
 
 const app = new Koa()
@@ -28,8 +28,7 @@ app
   .use(responseFormatter())
   .use(session(CONFIG, app))
   .use(cors({credentials: true}))
-  .use(router.routes())
-  .use(router.allowedMethods())
+  .use(routers)
   .use(serve('../dist', {defer: true}))
 
 app.listen(3000)

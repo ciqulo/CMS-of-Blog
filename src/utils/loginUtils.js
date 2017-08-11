@@ -14,17 +14,17 @@ export async function login({username, password}) {
   // token 是临时的，每一次login请求得到一个 用于防止传输后加密的密码从而重放攻击
   let pass = SHA256(salt + password).toString()
   pass = SHA256(token + pass).toString()
-  return request('/api/login', {username, password: pass})
+  return request('/api/user/login', {username, password: pass})
 }
 
 export async function loginWithCredentials() {
-  return request('/api/loginWithCredentials')
+  return request('/api/user/loginWithCredentials')
 }
 
 export async function logout() {
-  return request('/api/logout')
+  return request('/api/user/logout')
 }
 
 async function getSalt(username) {
-  return request('/api/token', {username})
+  return request('/api//user/token', {username})
 }

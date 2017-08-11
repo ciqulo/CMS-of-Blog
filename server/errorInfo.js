@@ -15,6 +15,10 @@ const MAP = {
   4007: '',
   400: '',
 
+
+  4021: '文章参数错误',
+  4022: '文章创建失败',
+  4023: '文章ID无效',
 }
 
 module.exports = function getErrorCode(code) {
