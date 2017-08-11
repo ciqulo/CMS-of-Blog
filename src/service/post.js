@@ -1,8 +1,7 @@
 import {request} from "../utils/index"
 
-export const createPost = (data) => {
+export const createPost = async (data) => {
   const {
-    postAuthor,
     postContent,
     postDate,
     postTitle,
@@ -12,10 +11,9 @@ export const createPost = (data) => {
   return request('/api/post/createPost', data)
 }
 
-export const editPost = (data) => {
+export const editPost = async (data) => {
   const {
     id,
-    postAuthor,
     postContent,
     postModified,
     postTitle,
