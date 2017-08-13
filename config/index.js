@@ -29,11 +29,11 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/graphql': {
-        target: 'http:dev-cms.ycwalker.me:4000/',
+        target: 'http://dev-cms.ycwalker.me:4000/',
         changeOrigin: true
       },
       '/api': {
-        target: 'http:dev-cms.ycwalker.me:4000/',
+        target: 'http://dev-cms.ycwalker.me:4000/',
         changeOrigin: true
       },
     },
