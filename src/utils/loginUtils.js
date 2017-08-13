@@ -26,5 +26,5 @@ export async function logout() {
 }
 
 async function getSalt(username) {
-  return request('/api//user/token', {username})
+  return request('/api/user/token', {username})
 }

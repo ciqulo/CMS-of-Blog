@@ -37,13 +37,13 @@ router.post('/api/post/updatePost', async ctx => {
   const postAuthor = ctx.session.username
 
   try {
-    await  connect.then(connect => connect.query(`
+    await connect.then(connect => connect.query(`
       UPDATE vwp.vwp_posts SET post_author='${postAuthor}',
       post_content='${postContent}',
       post_title='${postTitle}',
       post_modified='${postModified}',
       post_category='${postCategory}',
-      post_tag='${postTag}' WHERE ID='${id}'`)
+      post_tag='${postTag}' WHERE ID='${id}';`)
     )
     ctx.body = getErrorInfo(200)
   } catch (error) {

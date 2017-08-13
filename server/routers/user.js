@@ -10,6 +10,10 @@ const getUser = name => connect.then(async connect => {
   return result && result.length == 1 ? result[0] : null
 })
 
+const getUserByID = id => connect.then(async connect => {
+  const result = await connect.query(`SELECT * FROM vwp.vwp_users WHERE ID='${id}'`)
+  return result && result.length == 1 ? result[0] : null
+})
 const userTokens = {}
 
 // 登录时请求临时的token
@@ -44,6 +48,7 @@ router.post('/api/user/loginWithCredentials', async ctx => {
     username: user.user_name,
     userEmail: user.user_email,
     userUrl: user.user_url,
+    id: user.ID
   }
 
   return ctx.body = Object.assign({data: userInfo}, getErrorInfo(200))
@@ -73,6 +78,7 @@ router.post('/api/user/login', async ctx => {
     username: user.user_name,
     userEmail: user.user_email,
     userUrl: user.user_url,
+    id: user.ID
   }
 
   // 密码错误
@@ -97,6 +103,106 @@ router.post('/api/user/logout', async (ctx) => {
   ctx.session.username = null
 
   ctx.body = getErrorInfo(200)
+})
+
+router.post('/api/user/createUser', async ctx => {
+
+  let {username, userPass, userEmail, userUrl} = ctx.request.body
+  if (username == null) return getErrorInfo(4041)
+  if (userPass == null) return getErrorInfo(4042)
+  if (userEmail == null) return getErrorInfo(4043)
+  username = username.toString().trim()
+  userPass = userPass.toString()
+  userEmail = userEmail.toString()
+  if (username === '') return ctx.body = getErrorInfo(4041)
+  const user = await getUser(username)
+  if (user) return ctx.body = getErrorInfo(4044)
+  if (userPass.length < 2) return ctx.body = getErrorInfo(4045)
+  const userSalt = SHA256(rndString.generate(30)).toString()
+  userPass = SHA256(userSalt + userPass).toString()
+
+  try {
+    await connect.then(connect => connect.query(`
+      INSERT INTO vwp.vwp_users (user_name, user_pass, user_email, user_url, user_salt)
+      VALUES ('${username}', '${userPass}', '${userEmail}', '${userUrl}', '${userSalt}');
+      `)
+    )
+    ctx.body = getErrorInfo(200)
+  } catch (error) {
+    console.log(error)
+    ctx.body = getErrorInfo(4046)
+  }
+
+})
+
+router.post('/api/user/updateUser', async ctx => {
+
+  let {username, userEmail, userUrl, id} = ctx.request.body
+
+  if (!id || typeof id !== 'number') return ctx.body = getErrorInfo(4046)
+
+  if (username == null) username = ''
+  else {
+    username = username.toString().trim()
+    const existedUser = await getUser(username)
+    if (existedUser) return ctx.body = getErrorInfo(4044)
+  }
+
+  if (userEmail == null) userEmail = ''
+  if (userUrl == null) userUrl = ''
+
+  try {
+    await connect.then(connect => connect.query(`
+      UPDATE vwp.vwp_users SET 
+      user_name='${username}',
+      user_email='${userEmail}',
+      user_url='${userUrl}'
+      WHERE ID=${id};
+      `)
+    )
+    ctx.body = getErrorInfo(200)
+  } catch (error) {
+    console.log(error)
+    ctx.body = getErrorInfo(4047)
+  }
+
+})
+
+router.post('/api/user/updateUserPass', async ctx => {
+
+  let {id, userPass, newPass} = ctx.request.body
+
+  if (userPass == null || newPass == null || id == null) return ctx.body = getErrorInfo(4049)
+
+  userPass = userPass.toString()
+  newPass = newPass.toString()
+
+  const user = await getUserByID(id)
+  if (!user) return ctx.body = getErrorInfo(4050)
+
+  const pass = SHA256(user.user_salt + userPass).toString()
+
+  if (pass !== user.user_pass) return ctx.body = getErrorInfo(4048)
+
+  if (newPass.length < 2) return ctx.body = getErrorInfo(4045)
+
+  const userSalt = SHA256(rndString.generate(30)).toString()
+  newPass = SHA256(userSalt + newPass).toString()
+
+  try {
+    await connect.then(connect => connect.query(`
+      UPDATE vwp.vwp_users SET 
+      user_salt='${userSalt}',
+      user_pass='${newPass}'
+      WHERE ID=${id};
+      `)
+    )
+    ctx.body = getErrorInfo(200)
+  } catch (error) {
+    console.log(error)
+    ctx.body = getErrorInfo(4049)
+  }
+
 })
 
 module.exports = router
