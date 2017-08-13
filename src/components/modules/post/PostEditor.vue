@@ -2,7 +2,7 @@
   <div class="edit-content">
     <el-input class="edit-title" placeholder="标题：夕阳下的奔跑,那是我逝去的青春"></el-input>
     <div class="classification">
-      <el-select v-model="value" placeholder="请选择分类">
+      <el-select v-model="value1" placeholder="请选择分类">
         <el-option v-for="category in POST_CATEGORIES" :key="category" :label="category" :value="category">
         </el-option>
       </el-select>
@@ -28,17 +28,19 @@
     data () {
       return {
         input: '`PHP is the best language in the world`',
-        value: ''
+        value1: ''
       }
     },
     computed: {
       compiledMarkdown: function () {
-        return marked(this.input)
+        console.log(marked(this.input))
+        return marked(this.input, {sanitize: true})
       },
       ...mapGetters([POST_CATEGORIES])
     },
     methods: {
-      update: _.debounce((e) => {
+      update: _.debounce(function (e) {
+        console.log(this.input)
         this.input = e.target.value
       }, 300),
     },
@@ -74,7 +76,6 @@
       width: 100%;
       height: 100%;
       font-size: 16px;
-      font-family: "Courier New";
       outline: none;
       border: none;
     }
