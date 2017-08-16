@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading" element-loading-text="拼命加载中">
     <div class="menu-bar">
       <el-date-picker v-model="timeRange" type="daterange" placeholder="选择日期范围">
       </el-date-picker>
@@ -25,7 +25,7 @@
         <el-table-column label="操作">
           <template scope="scope">
             <el-button size="small">编辑</el-button>
-            <el-button size="small" type="danger">删除</el-button>
+            <el-button size="small" type="danger" @click="deletePost(scope.$index,POST_LISTS)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -35,7 +35,7 @@
 
 <script>
   import {mapActions, mapGetters} from 'vuex'
-  import {GET_POST_LIST} from '../../../store/actionTypes'
+  import {GET_POST_LIST, DELETE_POST_LIST} from '../../../store/actionTypes'
   import {POST_LISTS, POST_CATEGORIES} from '../../../store/getterNames'
 
   export default {
@@ -43,18 +43,28 @@
     data() {
       return {
         timeRange: '',
-        value: ''
+        value: '',
+        loading: true
       }
+
+    },
+    beforeCreated(){
+      Loading.service();
     },
     async created() {
       const {code, message} = await this.GET_POST_LIST() || {}
-      if (code != 200) this.$message.error({message})
+      if (code !== 200) return this.$message.error({message})
+      this.loading = false
     },
     methods: {
       handleSelectionChange(val) {
         this.multipleSelection = val
       },
-      ...mapActions([GET_POST_LIST]),
+      async deletePost(index, post){
+        const payload = {id: post[index].id}
+        const {code} = await this.DELETE_POST_LIST(payload)
+      },
+      ...mapActions([GET_POST_LIST, DELETE_POST_LIST]),
     },
     components: {},
     computed: {

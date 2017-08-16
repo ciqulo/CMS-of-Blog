@@ -4,6 +4,7 @@ import {POST_LISTS, POST_CATEGORIES, POST_TAGS} from "../getterNames"
 import moment from 'moment'
 
 import {fetchPostList, fetchPost} from '../../service'
+import {deletePost} from  '../../service/post'
 
 const state = {
   postList: []
@@ -12,8 +13,12 @@ const state = {
 const actions = {
   async [actionTypes.GET_POST_LIST]({commit}) {
     const {code, message, data} = await fetchPostList()
+    console.log(data)
     if (code == 200) commit(SET_POST_LIST, data.posts)
     return {code, message}
+  },
+  async [actionTypes.DELETE_POST_LIST]({commit}, payload){
+    return await deletePost(payload)
   }
 }
 

@@ -29,3 +29,5 @@ export const fetchPost = id => graphql(
 	}
 }
 `)
+
+
