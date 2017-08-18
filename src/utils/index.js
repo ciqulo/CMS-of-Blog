@@ -16,3 +16,4 @@ export async function request(path, payload) {
     .then(res => res.json({}))
     .catch(err => console.warn(err))
 }
+

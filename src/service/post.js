@@ -22,3 +22,8 @@ export const editPost = async (data) => {
   } = data
   return request('/api/post/createPost', data)
 }
+
+export const deletePost = async (data) => {
+  const {id} = data
+  return request('/api/post/updatePost', data)
+}
