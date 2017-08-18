@@ -1,19 +1,20 @@
 language: node_js
 node_js:
-  - '7'
+- '7'
 env:
-  - NODE_ENV=development
+- NODE_ENV=development
 cache: yarn
 before_install:
-  - openssl aes-256-cbc -K $encrypted_7d662d0b39ec_key -iv $encrypted_7d662d0b39ec_iv -in travis.enc -out ~/.ssh/id_rsa -d
-  - eval "$(ssh-agent -s)"
-  - chmod 600 ~/.ssh/id_rsa
-  - echo -e "Host 66.112.210.21\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+- openssl aes-256-cbc -K $encrypted_7d662d0b39ec_key -iv $encrypted_7d662d0b39ec_iv
+  -in travis.enc -out ~/.ssh/id_rsa -d
+- eval "$(ssh-agent -s)"
+- chmod 600 ~/.ssh/id_rsa
+- echo -e "Host 108.61.201.17\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 install:
-  - yarn
+- yarn
 addons:
-  ssh_known_hosts: 66.112.210.21
+  ssh_known_hosts: 108.61.201.17
 script:
-  - npm run build
-  - cd ./dist && ls -al
-  - rsync -r -e 'ssh -p 26544' ./ root@66.112.210.21:/var/cms-backend/public
+- npm run build
+- cd ./dist && ls -al
+- rsync -r -e 'ssh -p 26544' ./ root@108.61.201.17:/var/cms-backend/public
