@@ -76,9 +76,9 @@ router.beforeEach(async (to, from, next) => {
 
   // cookie 经过 base64 编码
   // 多个页面若有一个退出登录 那么其他页面在路由跳转也会重定向
-  const {username} = JSON.parse(atob(cookie) || '{}')
+  const {id} = JSON.parse(atob(cookie) || '{}')
 
-  if (!username) return next({path: '/login'})
+  if (!id) return next({path: '/login'})
 
   // 如果请求非login页面，并且有cookie，那么使用session登录
   if (!store.state.user.username) {

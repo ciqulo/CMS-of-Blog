@@ -12,15 +12,15 @@
       <el-table :data="POST_LISTS" @selection-change="handleSelectionChange">
         <el-table-column type="selection">
         </el-table-column>
-        <el-table-column prop="postTitle" label="标题">
+        <el-table-column prop="title" label="标题">
         </el-table-column>
-        <el-table-column prop="postAuthor" label="作者">
+        <el-table-column prop="author" label="作者">
         </el-table-column>
-        <el-table-column prop="postCategory" label="分类目录">
+        <el-table-column prop="category" label="分类目录">
         </el-table-column>
-        <el-table-column prop="postTag" label="标签">
+        <el-table-column prop="tag" label="标签">
         </el-table-column>
-        <el-table-column prop="postDate" label="日期">
+        <el-table-column prop="date" label="日期">
         </el-table-column>
         <el-table-column label="操作">
           <template scope="scope">

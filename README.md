@@ -1,7 +1,7 @@
 
 >  Blog CMS Powered by Vue.js
 
-[![Build Status](https://travis-ci.org/ciqulo/CMS-of-Blog.svg?branch=master)](https://travis-ci.org/ciqulo/CMS-of-Blog)
+[![Build Status](https://travis-ci.org/ciqulo/CMS-of-Blog.svg?branch=develop)](https://travis-ci.org/ciqulo/CMS-of-Blog)
 
 ## Build Setup
 

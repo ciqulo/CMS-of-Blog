@@ -1,29 +1,40 @@
 import {request} from "../utils/index"
 
+export const fetchPostList = async () => {
+  return request('/api/post/fetchPostList')
+}
+
+export const fetchPost = async (id) => {
+  return request('/api/post/fetchPost', {id})
+}
+
+export const deletePost = async (id) => {
+  return request('/api/post/deletePost', {id})
+}
+
 export const createPost = async (data) => {
   const {
-    postContent,
-    postDate,
-    postTitle,
-    postCategory,
-    postTag,
+    content,
+    date,
+    title,
+    categories,
+    tags,
   } = data
   return request('/api/post/createPost', data)
 }
 
 export const editPost = async (data) => {
   const {
-    id,
-    postContent,
-    postModified,
-    postTitle,
-    postCategory,
-    postTag,
+    content,
+    modified,
+    title,
+    categories,
+    tags,
   } = data
   return request('/api/post/createPost', data)
 }
 
-export const deletePost = async (data) => {
-  const {id} = data
+export const deletePosts = async (data) => {
+  const {ids} = data
   return request('/api/post/updatePost', data)
 }

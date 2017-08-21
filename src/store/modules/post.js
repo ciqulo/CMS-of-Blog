@@ -3,7 +3,7 @@ import {SET_POST_LIST} from '../mutationTypes'
 import {POST_LISTS, POST_CATEGORIES, POST_TAGS} from "../getterNames"
 import moment from 'moment'
 
-import {fetchPostList, fetchPost} from '../../service'
+import {fetchPostList, fetchPost} from '../../service/post'
 import {deletePost} from  '../../service/post'
 
 const state = {
@@ -14,11 +14,11 @@ const actions = {
   async [actionTypes.GET_POST_LIST]({commit}) {
     const {code, message, data} = await fetchPostList()
     console.log(data)
-    if (code == 200) commit(SET_POST_LIST, data.posts)
+    if (code == 200) commit(SET_POST_LIST, data)
     return {code, message}
   },
-  async [actionTypes.DELETE_POST_LIST]({commit}, payload){
-    return await deletePost(payload)
+  async [actionTypes.DELETE_POST_LIST]({commit}, id){
+    return await deletePost(id)
   }
 }
 

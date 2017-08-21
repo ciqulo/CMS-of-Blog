@@ -28,10 +28,6 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/graphql': {
-        target: 'http://dev-cms.ycwalker.me:4000/',
-        changeOrigin: true
-      },
       '/api': {
         target: 'http://dev-cms.ycwalker.me:4000/',
         changeOrigin: true
