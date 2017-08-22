@@ -14,7 +14,7 @@ const actions = {
   async [actionTypes.GET_POST_LIST]({commit}) {
     const {code, message, data} = await fetchPostList()
     console.log(data)
-    if (code == 200) commit(SET_POST_LIST, data)
+    if (code == 200) commit(SET_POST_LIST, data.postList)
     return {code, message}
   },
   async [actionTypes.DELETE_POST_LIST]({commit}, id){
