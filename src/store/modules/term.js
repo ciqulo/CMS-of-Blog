@@ -1,29 +1,25 @@
-import * as actionTypes from '../actionTypes'
-import * as mutationTypes from '../mutationTypes'
-import * as getterTypes from '../getterNames'
-import { fetchCategories } from '../../service/term'
+import {FETCH_CATEGORY} from '../actionTypes'
+import {SET_CATEGORIES} from '../mutationTypes'
+import {fetchCategories} from '../../service/term'
 
 const state = {
-    categroyList: []
+  categories: [],
+  tags: []
 }
 const actions = {
-    async [actionTypes.GET_CATEGORY_LIST]({ commit }) {
-        const { code, data, message } = await fetchCategories()
-        if (code === 200) commit(mutationTypes.SET_CATEGROY_LIST, data)
-        return { code, data, message }
-    }
+  async [FETCH_CATEGORY]({commit}) {
+    const {code, data} = await fetchCategories()
+    if (code === 200) commit(SET_CATEGORIES, data)
+  }
 }
 const mutations = {
-    [mutationTypes.SET_CATEGROY_LIST](state, data) {
-        state.categroyList = data
-    }
+  [SET_CATEGORIES](state, data) {
+    state.categories = data
+  }
 }
-const getters = {
-    [getterTypes.TERM_CATEGORY_LIST]: state => state.categroyList
-}
+
 export default {
-    state,
-    getters,
-    actions,
-    mutations
+  state,
+  actions,
+  mutations
 }

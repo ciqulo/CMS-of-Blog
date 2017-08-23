@@ -24,7 +24,7 @@
 import lodash from 'lodash'
 import marked from 'marked'
 import { mapGetters, mapActions } from 'vuex'
-import { GET_CATEGORY_LIST, INSERT_NEW_POST } from '../../../store/actionTypes'
+import { FETCH_CATEGORY, CREATE_POST } from '../../../store/actionTypes'
 import { TERM_CATEGORY_LIST } from '../../../store/getterNames'
 export default {
   name: 'hello',
@@ -53,16 +53,16 @@ export default {
       this.input = e.target.value
     }, 300),
     async getCategory() {
-      const { code, data, message } = await this.GET_CATEGORY_LIST()
+      const { code, data, message } = await this.FETCH_CATEGORY()
       console.log(data)
     },
     async insertPost() {
       const date = new Date()
       const payload = { title: this.title, content: this.input, categories: [this.value1], data: date }
-      const { code } = await this.INSERT_NEW_POST(payload)
+      const { code } = await this.CREATE_POST(payload)
       if (code === 200) this.$message({ message: '发表成功', type: 'success' })
     },
-    ...mapActions([GET_CATEGORY_LIST, INSERT_NEW_POST])
+    ...mapActions([FETCH_CATEGORY, CREATE_POST])
   },
   components: {},
 }

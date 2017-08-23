@@ -1,50 +1,60 @@
-import * as actionTypes from '../actionTypes'
-import { SET_POST_LIST } from '../mutationTypes'
-import { POST_LISTS, POST_CATEGORIES, POST_TAGS } from "../getterNames"
-import moment from 'moment'
+import {FETCH_POST_LIST, DELETE_POST, DELETE_POSTS, CREATE_POST, UPDATE_CURRENT} from "../actionTypes"
 
-import { fetchPostList, fetchPost } from '../../service/post'
-import { deletePost, createPost } from '../../service/post'
+import {SET_POST_LIST, SET_CURRENT} from '../mutationTypes'
+
+import {fetchPostList, fetchPost, deletePost, deletePosts, createPost, updatePost} from '../../service/post'
 
 const state = {
-    postList: []
+  postList: [],
+  pageSize: 10,
+  current: 1,
+  total: null,
+  totalPages: null,
 }
 
 const actions = {
-    async [actionTypes.GET_POST_LIST]({ commit }, payload) {
-        const { code, message, data } = await fetchPostList(payload)
-        const { pageSize, total, totalPages } = data
-        console.log(data)
-        if (code == 200) commit(SET_POST_LIST, data.postList)
-        return { pageSize, total, totalPages, code, message }
-    },
-    async [actionTypes.INSERT_NEW_POST]({ commit }, payload) {
-        return await createPost(payload)
-    },
-    async [actionTypes.DELETE_POST_LIST]({ commit }, id) {
-        return await deletePost(id)
+  async [FETCH_POST_LIST]({commit, state}, payload) {
+    const {code, data} = await fetchPostList({
+      current: state.current,
+      pageSize: state.pageSize
+    })
+    if (code === 200) commit(SET_POST_LIST, data)
+    return code
+  },
+  async [CREATE_POST]({dispatch}, payload) {
+    const {code} = await createPost(payload)
+    return code
+  },
+  async [DELETE_POST]({dispatch}, id) {
+    const {code} = await deletePost(id)
+    return code
+  },
+  async [DELETE_POSTS]({dispatch}, ids) {
+    const {code} = await deletePosts(ids)
+    return code
+  },
+  async [UPDATE_CURRENT]({commit}, current) {
+    const {code, data} = await fetchPostList({current})
+    if (code === 200) {
+      commit(SET_POST_LIST, data)
+      commit(SET_CURRENT, current)
     }
+  }
 }
 
 const mutations = {
-    [SET_POST_LIST](state, data) {
-        state.postList = data
+  [SET_POST_LIST](state, data) {
+    for (const [key, value] of Object.entries(data)) {
+      state[key] = value
     }
-}
-
-const getters = {
-    [POST_LISTS]: state => state.postList.map(post => ({
-        ...post,
-        postDate: moment(post.postDate).format('YYYY-MM-DD HH:mm')
-    })),
-
-    [POST_CATEGORIES]: state => [...new Set(state.postList.map(post => post.postCategory))],
-    [POST_TAGS]: state => [...new Set(state.postList.map(post => post.postTag))]
+  },
+  [SET_CURRENT](state, current) {
+    state.current = current
+  }
 }
 
 export default {
-    state,
-    getters,
-    actions,
-    mutations
+  state,
+  actions,
+  mutations
 }

@@ -1,5 +1,3 @@
 import { request } from "../utils/index"
 
-export const fetchCategories = () => {
-    return request('/api/term/fetchCategories')
-}
+export const fetchCategories = () => request('/api/term/fetchCategories')

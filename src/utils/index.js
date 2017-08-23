@@ -1,3 +1,5 @@
+import {Notification} from 'element-ui';
+
 export async function request(path, payload) {
   return fetch(path, {
     method: 'POST',
@@ -14,6 +16,14 @@ export async function request(path, payload) {
       throw error
     })
     .then(res => res.json({}))
+    .then(res => {
+      if (res.code !== 200) Notification({
+        showClose: true,
+        message: res.message,
+        type: 'error'
+      })
+      return res
+    })
     .catch(err => console.warn(err))
 }
 
