@@ -2,8 +2,14 @@
   <div class="edit-content">
     <el-input class="edit-title" v-model="title" placeholder="标题：夕阳下的奔跑,那是我逝去的青春"></el-input>
     <div class="classification">
-      <el-select v-model="value1" placeholder="请选择分类">
-        <el-option v-for="category in TERM_CATEGORY_LIST" :key="category.id" :value="category.id" :label="category.name">
+      <el-select v-model="categoryValue" multiple placeholder="请选择分类">
+        <el-option v-for="type in term.categories" :key="type.id" :value="type.id"
+                   :label="type.name">
+        </el-option>
+      </el-select>
+      <el-select v-model="tagsValue" multiple placeholder="请选择标签">
+        <el-option v-for="tags in term.tags" :key="tags.id" :value="tags.id"
+                   :label="tags.name">
         </el-option>
       </el-select>
     </div>
@@ -14,104 +20,98 @@
       <div class="show-tab" v-html="compiledMarkdown" v-highlight></div>
     </div>
     <div class="edit-submit">
-      <el-button type="primary" @click="insertPost">发布文章</el-button>
+      <el-button type="primary" @click="createPost">发布文章</el-button>
     </div>
 
   </div>
 </template>
 
 <script>
-import lodash from 'lodash'
-import marked from 'marked'
-import { mapGetters, mapActions } from 'vuex'
-import { FETCH_CATEGORY, CREATE_POST } from '../../../store/actionTypes'
-import { TERM_CATEGORY_LIST } from '../../../store/getterNames'
-export default {
-  name: 'hello',
-  data() {
-    return {
-      input: '`PHP is the best language in the world`',
-      value1: '',
-      title: '',
-      content: '',
-
-    }
-  },
-  created() {
-    this.getCategory()
-  },
-  computed: {
-    compiledMarkdown: function() {
-      console.log(marked(this.input))
-      return marked(this.input, { sanitize: true })
+  import lodash from 'lodash'
+  import marked from 'marked'
+  import {mapState, mapActions} from 'vuex'
+  import {FETCH_CATEGORY, FETCH_TAGS, CREATE_POST} from '../../../store/actionTypes'
+  export default {
+    name: 'hello',
+    data() {
+      return {
+        input: '`PHP is the best language in the world`',
+        categoryValue: '',
+        tagsValue: '',
+        title: '',
+      }
     },
-    ...mapGetters([TERM_CATEGORY_LIST])
-  },
-  methods: {
-    update: _.debounce(function(e) {
-      console.log(this.input)
-      this.input = e.target.value
-    }, 300),
-    async getCategory() {
-      const { code, data, message } = await this.FETCH_CATEGORY()
-      console.log(data)
+    async created() {
+      await this.FETCH_CATEGORY()
+      await this.FETCH_TAGS()
     },
-    async insertPost() {
-      const date = new Date()
-      const payload = { title: this.title, content: this.input, categories: [this.value1], data: date }
-      const { code } = await this.CREATE_POST(payload)
-      if (code === 200) this.$message({ message: '发表成功', type: 'success' })
+    computed: {
+      compiledMarkdown: function () {
+        return marked(this.input, {sanitize: true})
+      },
+      ...mapState(['term'])
     },
-    ...mapActions([FETCH_CATEGORY, CREATE_POST])
-  },
-  components: {},
-}
+    methods: {
+      update: _.debounce(function (e) {
+        this.input = e.target.value
+      }, 300),
+      async createPost() {
+        const date = new Date()
+        const payload = {
+          title: this.title, content: this.input, tags: this.tagsValue, categories: this.categoryValue, data: date
+        }
+        const code = await this.CREATE_POST(payload)
+        if (code === 200) this.$notify.success({title: '发表成功'})
+      },
+      ...mapActions([FETCH_CATEGORY, FETCH_TAGS, CREATE_POST])
+    },
+  }
 </script>
 <style lang="scss">
-.edit-content {
-  position: absolute;
-  top: 10px;
-  bottom: 0;
-  width: 96%;
-  margin: 10px 0 0 2%;
-}
-
-.edit-state {
-  position: absolute;
-  top: 80px;
-  bottom: 100px;
-  display: flex;
-  margin: 10px 0 0 0;
-  border-radius: 3px;
-  width: 100%;
-  div {
-    flex: 1;
+  .edit-content {
+    position: absolute;
+    top: 10px;
+    bottom: 0;
+    width: 96%;
+    margin: 10px 0 0 2%;
   }
-}
 
-.edit-tab {
-  border: 1px solid rgb(191, 203, 217);
-  border-right: none;
-  textarea {
+  .edit-state {
+    position: absolute;
+    top: 80px;
+    bottom: 100px;
+    display: flex;
+    margin: 10px 0 0 0;
+    border-radius: 3px;
     width: 100%;
-    height: 100%;
-    font-size: 16px;
-    outline: none;
-    border: none;
+    div {
+      flex: 1;
+    }
   }
-}
 
-.show-tab {
-  border: 1px solid rgb(191, 203, 217);
-  background: rgba(191, 203, 217, .1);
-}
+  .edit-tab {
+    border: 1px solid rgb(191, 203, 217);
+    border-right: none;
+    textarea {
+      width: 100%;
+      height: 100%;
+      font-size: 16px;
+      outline: none;
+      border: none;
+    }
+  }
 
-.classification {
-  margin: 10px 0 0 0;
-}
+  .show-tab {
+    border: 1px solid rgb(191, 203, 217);
+    background: rgba(191, 203, 217, .1);
+  }
 
-.edit-submit {
-  position: absolute;
-  bottom: 40px;
-}
+  .classification {
+    margin: 10px 0 0 0;
+  }
+
+  .edit-submit {
+    position: absolute;
+    bottom: 40px;
+  }
 </style>

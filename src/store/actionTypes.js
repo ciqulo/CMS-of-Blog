@@ -8,5 +8,6 @@ export const DELETE_POST = 'DELETE_POST' //删除文章
 export const DELETE_POSTS = 'DELETE_POSTS'
 export const UPDATE_POST = 'UPDATE_POST'
 export const UPDATE_PAGINATION = 'UPDATE_PAGINATION'
-export const FETCH_CATEGORY = 'FETCH_CATEGORY' //获取所有标签
+export const FETCH_CATEGORY = 'FETCH_CATEGORY' //获取分类
 export const CREATE_POST = 'CREATE_POST' //新增文章
+export const FETCH_TAGS = 'FETCH_TAGS' //获取标签

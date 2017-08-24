@@ -29,6 +29,7 @@ const actions = {
   },
   async [CREATE_POST]({dispatch}, payload) {
     const {code} = await createPost(payload)
+    console.log(code)
     return code
   },
   async [DELETE_POST]({dispatch}, id) {
