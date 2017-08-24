@@ -54,11 +54,14 @@
       </el-table>
     </div>
     <div class="paging">
-      <el-pagination v-if="post.total"
-                     layout="prev, pager, next"
-                     :page-size="post.pageSize"
-                     :total="post.total"
-                     @current-change="handleCurrentChange">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="post.current"
+        :page-sizes="[5, 10, 15, 20]"
+        :page-size="post.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="post.total">
       </el-pagination>
     </div>
   </div>
@@ -66,7 +69,7 @@
 
 <script>
   import {mapActions, mapState} from 'vuex'
-  import {FETCH_POST_LIST, DELETE_POST, FETCH_CATEGORY, UPDATE_CURRENT, DELETE_POSTS} from '../../../store/actionTypes'
+  import {FETCH_POST_LIST, DELETE_POST, FETCH_CATEGORY, UPDATE_PAGINATION, DELETE_POSTS} from '../../../store/actionTypes'
 
   export default {
     name: 'hello',
@@ -95,7 +98,12 @@
       },
       async handleCurrentChange(val) {
         this.loading = true
-        await this.UPDATE_CURRENT(val)
+        await this.UPDATE_PAGINATION({current:val})
+        this.loading = false
+      },
+      async handleSizeChange(val){
+        this.loading = true
+        await this.UPDATE_PAGINATION({pageSize:val})
         this.loading = false
       },
       async deletePost(id) {
@@ -124,7 +132,7 @@
       searchPost() {
 
       },
-      ...mapActions([FETCH_POST_LIST, DELETE_POST, DELETE_POSTS, FETCH_CATEGORY, UPDATE_CURRENT]),
+      ...mapActions([FETCH_POST_LIST, DELETE_POST, DELETE_POSTS, FETCH_CATEGORY, UPDATE_PAGINATION]),
     },
     components: {},
     computed: {
