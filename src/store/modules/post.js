@@ -3,7 +3,8 @@ import {
   DELETE_POST,
   DELETE_POSTS,
   CREATE_POST,
-  UPDATE_PAGINATION
+  UPDATE_PAGINATION,
+  FETCH_SEARCH_POST
 } from "../actionTypes"
 
 import {SET_POST_LIST} from '../mutationTypes'
@@ -27,8 +28,15 @@ const actions = {
     if (code === 200) commit(SET_POST_LIST, data)
     return code
   },
+  async [FETCH_SEARCH_POST]({commit}, payload){
+    const {data, code} = await fetchPostList(payload)
+    console.log(data)
+    if (code === 200) commit(SET_POST_LIST, data)
+    return code
+  },
   async [CREATE_POST]({dispatch}, payload) {
-    const {code} = await createPost(payload)
+    const {code} = await
+      createPost(payload)
     console.log(code)
     return code
   },

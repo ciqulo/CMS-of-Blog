@@ -11,3 +11,4 @@ export const UPDATE_PAGINATION = 'UPDATE_PAGINATION'
 export const FETCH_CATEGORY = 'FETCH_CATEGORY' //获取分类
 export const CREATE_POST = 'CREATE_POST' //新增文章
 export const FETCH_TAGS = 'FETCH_TAGS' //获取标签
+export const FETCH_SEARCH_POST = 'FETCH_SEARCH_POST'//查询文章
