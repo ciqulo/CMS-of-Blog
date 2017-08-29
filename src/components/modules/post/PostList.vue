@@ -22,7 +22,7 @@
           <el-button size="mini" type="text" @click.native.prevent="$refs.page.click()">取消</el-button>
           <el-button type="primary" size="mini" @click.native.prevent="deletePosts()">确定</el-button>
         </div>
-        <el-button type="danger" slot="reference">批量删除</el-button>
+        <el-button type="danger" v-if="multipleSelection" slot="reference">批量删除</el-button>
       </el-popover>
     </div>
     <div class="content-state">
@@ -84,7 +84,6 @@
   } from '../../../store/actionTypes'
 
   export default {
-    name: 'hello',
     data() {
       return {
         loading: true,

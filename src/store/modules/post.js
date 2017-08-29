@@ -4,7 +4,8 @@ import {
   DELETE_POSTS,
   CREATE_POST,
   UPDATE_PAGINATION,
-  FETCH_SEARCH_POST
+  FETCH_SEARCH_POST,
+  UPDATE_SEARCH_POST
 } from "../actionTypes"
 
 import {SET_POST_LIST} from '../mutationTypes'
@@ -17,27 +18,38 @@ const state = {
   current: 1,
   total: 0,
   totalPages: 0,
+  title: '',
+  start: '',
+  end: '',
+  tag: '',
+  category: ''
 }
 
 const actions = {
   async [FETCH_POST_LIST]({commit, state}, payload) {
     const {code, data} = await fetchPostList({
       current: state.current,
-      pageSize: state.pageSize
+      pageSize: state.pageSize,
+      title: state.title,
+      start: state.start,
+      end: state.end,
+      tag: state.tag,
+      category: state.category
     })
     if (code === 200) commit(SET_POST_LIST, data)
-    return code
+    return {code}
   },
-  async [FETCH_SEARCH_POST]({commit}, payload){
+  async [FETCH_SEARCH_POST]({commit, state}, payload){
     const {data, code} = await fetchPostList(payload)
-    console.log(data)
-    if (code === 200) commit(SET_POST_LIST, data)
+    if (code === 200) {
+      commit(SET_POST_LIST, data)
+      commit(UPDATE_SEARCH_POST, payload)
+    }
     return code
   },
   async [CREATE_POST]({dispatch}, payload) {
     const {code} = await
       createPost(payload)
-    console.log(code)
     return code
   },
   async [DELETE_POST]({dispatch}, id) {
@@ -53,7 +65,7 @@ const actions = {
     pageSize = pageSize || state.pageSize
     const {code, data} = await fetchPostList({current, pageSize})
     if (code === 200) commit(SET_POST_LIST, data)
-  }
+  },
 }
 
 const mutations = {
@@ -62,6 +74,11 @@ const mutations = {
       state[key] = value
     }
   },
+  [UPDATE_SEARCH_POST](state, data){
+    for (const [key, value] of Object.entries(data)) {
+      state[key] = value
+    }
+  }
 }
 
 export default {
