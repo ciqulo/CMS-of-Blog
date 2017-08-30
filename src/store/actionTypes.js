@@ -15,3 +15,5 @@ export const FETCH_SEARCH_POST = 'FETCH_SEARCH_POST'//查询文章
 export const UPDATE_SEARCH_POST = 'UPDATE_SEARCH_POST'
 
 export const CREATE_TAGS = 'CREATE_TAGS'
+export const DELETE_TAGS = 'DELETE_TAGS'
+export const UPDATE_TAGS = 'UPDATE_TAGS'
