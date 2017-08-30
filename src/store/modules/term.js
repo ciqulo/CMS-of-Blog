@@ -1,6 +1,6 @@
-import {FETCH_CATEGORY, FETCH_TAGS} from '../actionTypes'
+import {FETCH_CATEGORY, FETCH_TAGS, CREATE_TAGS} from '../actionTypes'
 import {SET_CATEGORIES, SET_TAGS} from '../mutationTypes'
-import {fetchCategories, fetchTags} from '../../service/term'
+import {fetchCategories, fetchTags, createTags} from '../../service/term'
 
 const state = {
   categories: [],
@@ -14,6 +14,11 @@ const actions = {
   async [FETCH_TAGS]({commit}){
     const {code, data} = await fetchTags()
     if (code === 200) commit(SET_TAGS, data)
+  },
+  async[CREATE_TAGS]({commit}, payload){
+    const {code} = await createTags(payload)
+    console.log(code)
+    return code
   }
 }
 const mutations = {
