@@ -9,7 +9,10 @@ const state = {
 const actions = {
   async [FETCH_CATEGORY]({commit}) {
     const {code, data} = await fetchCategories()
-    if (code === 200) commit(SET_CATEGORIES, data)
+    if (code === 200) {
+      commit(SET_CATEGORIES, data)
+      return {code, data}
+    }
   },
   async [FETCH_TAGS]({commit}){
     const {code, data} = await fetchTags()

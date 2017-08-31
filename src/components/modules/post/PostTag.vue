@@ -2,7 +2,6 @@
   <div v-loading="loading" element-loading-text="拼命加载中" ref="page">
     <div class="menu-bar">
       <el-button @click="openDialogAddTags" type="primary">新增标签</el-button>
-      <el-button type="danger">批量删除</el-button>
     </div>
     <div class="content-state">
       <el-table :data="term.tags">
