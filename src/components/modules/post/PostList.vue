@@ -1,18 +1,26 @@
 <template>
   <div v-loading="loading" element-loading-text="拼命加载中" ref="page">
     <div class="menu-bar">
-      <el-date-picker v-model="timeRange" type="daterange" placeholder="选择日期范围">
+      <el-date-picker
+        v-model="start"
+        type="datetime"
+        placeholder="选择时间起点">
       </el-date-picker>
-      <el-select v-model="selectedCategory" placeholder="请选择分类">
+      <el-date-picker
+        v-model="end"
+        type="datetime"
+        placeholder="选择时间终点">
+      </el-date-picker>
+      <el-select v-model="categories" multiple placeholder="请选择分类">
         <el-option v-for="category in term.categories" :key="category.id" :value="category.id" :label="category.name">
         </el-option>
       </el-select>
-      <el-select v-model="selectedTags" placeholder="请选择标签">
+      <el-select v-model="tags" multiple placeholder="请选择标签">
         <el-option v-for="tag in term.tags" :key="tag.id" :value="tag.id" :label="tag.name">
         </el-option>
       </el-select>
       <el-input class="menu-search" v-model="title" placeholder="标题"></el-input>
-      <el-button type="primary" @click="searchPost">搜索</el-button>
+      <el-button type="primary" @click="searchPosts">搜索</el-button>
       <el-popover
         placement="top"
         width="160"
@@ -33,9 +41,15 @@
         </el-table-column>
         <el-table-column prop="author" label="作者">
         </el-table-column>
-        <el-table-column prop="category" label="分类目录">
+        <el-table-column label="分类目录">
+          <template scope="scope">
+            <div>{{(scope.row.categories || []).join(' , ')}}</div>
+          </template>
         </el-table-column>
-        <el-table-column prop="tag" label="标签">
+        <el-table-column label="标签">
+          <template scope="scope">
+            <div>{{(scope.row.tags || []).join(' , ')}}</div>
+          </template>
         </el-table-column>
         <el-table-column prop="date" label="日期">
         </el-table-column>
@@ -72,28 +86,23 @@
 </template>
 
 <script>
-  import {mapActions, mapState} from 'vuex'
+  import {mapActions, mapMutations, mapState} from 'vuex'
+  import moment from 'moment'
   import {
     FETCH_POST_LIST,
-    FETCH_SEARCH_POST,
     FETCH_TAGS,
     DELETE_POST,
     FETCH_CATEGORY,
     UPDATE_PAGINATION,
     DELETE_POSTS
   } from '../../../store/actionTypes'
+  import {UPDATE_QUERY} from '../../../store/mutationTypes'
 
   export default {
     data() {
       return {
         loading: true,
-        timeRange: '',
         multipleSelection: '',
-        selectedCategory: '',
-        selectedTags: '',
-        searchVal: '',
-        title: '',
-
       }
     },
     async created() {
@@ -116,7 +125,7 @@
         await this.UPDATE_PAGINATION({current: val})
         this.loading = false
       },
-      async handleSizeChange(val){
+      async handleSizeChange(val) {
         this.loading = true
         await this.UPDATE_PAGINATION({pageSize: val})
         this.loading = false
@@ -142,24 +151,59 @@
           this.fetchPostList()
         }
       },
-      async searchPost() {
-        let start = this.timeRange[0]
-        let end = this.timeRange[1]
-        const payload = {
-          start: start,
-          end: end,
-          title: this.title,
-          tag: this.selectedTags,
-          category: this.selectedCategory
-        }
-        await this.FETCH_SEARCH_POST(payload)
-
+      async searchPosts() {
+        this.loading = true
+        await this.FETCH_POST_LIST()
+        this.loading = false
       },
-      ...mapActions([FETCH_POST_LIST, FETCH_SEARCH_POST, FETCH_TAGS, DELETE_POST, DELETE_POSTS, FETCH_CATEGORY, UPDATE_PAGINATION]),
+      ...mapActions([FETCH_POST_LIST, FETCH_TAGS, DELETE_POST, DELETE_POSTS, FETCH_CATEGORY, UPDATE_PAGINATION]),
+      ...mapMutations([UPDATE_QUERY])
     },
     components: {},
     computed: {
-      ...mapState(['post', 'term'])
+      ...mapState(['post', 'term']),
+      tags: {
+        get() {
+          return this.post.tags
+        },
+        set(value) {
+          this.UPDATE_QUERY({key: 'tags', value})
+        }
+      },
+      categories: {
+        get() {
+          return this.post.categories
+        },
+        set(value) {
+          this.UPDATE_QUERY({key: 'categories', value})
+        }
+      },
+      start: {
+        get() {
+          return this.post.start
+        },
+        set(value) {
+          value = moment(value).format('YYYY-MM-DD HH:hh:ss')
+          this.UPDATE_QUERY({key: 'start', value})
+        }
+      },
+      end: {
+        get() {
+          return this.post.end
+        },
+        set(value) {
+          value = moment(value).format('YYYY-MM-DD HH:hh:ss')
+          this.UPDATE_QUERY({key: 'end', value})
+        }
+      },
+      title: {
+        get() {
+          return this.post.title
+        },
+        set(value) {
+          this.UPDATE_QUERY({key: 'title', value})
+        }
+      }
     }
   }
 </script>
