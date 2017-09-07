@@ -15,7 +15,7 @@
           <i class="fa fa-lock fw" aria-hidden="true"></i>
           <input type="password" v-model="password" placeholder="密码">
         </label>
-        <button @click="doLogin">确认登录</button>
+        <button @click="doLogin" v-loading="loading">确认登录</button>
       </div>
     </div>
   </div>
@@ -24,15 +24,17 @@
 <script>
   import {mapActions, mapState} from 'vuex'
   import {LOGIN} from '../store/actionTypes'
+
   export default {
-    data () {
+    data() {
       return {
+        loading: false,
         username: '',
         password: '',
       }
     },
     methods: {
-      checkValidity(){
+      checkValidity() {
         let isValid = true
 
         if (!this.username || !this.password) {
@@ -53,15 +55,13 @@
         return isValid
       },
 
-      async doLogin(){
+      async doLogin() {
         if (!this.checkValidity()) return
+        this.loading = true
 
-        const {code, message} = await this.LOGIN({
-          username: this.username,
-          password: this.password
-        }) || {}
+        await this.LOGIN({username: this.username, password: this.password})
+        this.loading = false
 
-        if (code != 200) return this.$notify({title: '警告', message, type: 'error'})
         this.$router.push({path: '/'})
       },
       ...mapActions([LOGIN])

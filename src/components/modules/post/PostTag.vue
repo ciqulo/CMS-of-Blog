@@ -1,15 +1,15 @@
 <template>
-  <div v-loading="loading" element-loading-text="拼命加载中" ref="page">
+  <div v-loading="loading" style="padding: 20px" element-loading-text="拼命加载中" ref="page">
     <div class="menu-bar">
-      <el-button @click="openDialogAddTags" type="primary">新增标签</el-button>
+      <el-button @click="openDialogAddTags" size="small">新增标签</el-button>
     </div>
-    <div class="content-state">
+    <div style="padding: 10px">
       <el-table :data="term.tags">
-        <el-table-column prop="name" label="标签"></el-table-column>
+        <el-table-column prop="name" label="标签" width="200"></el-table-column>
         <el-table-column prop="description" label="描述"></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="200">
           <template scope="scope">
-            <el-button type="primary" size="small"
+            <el-button size="small"
                        @click="openUpdate(scope.row.id,scope.row.name,scope.row.description)">编辑
             </el-button>
             <el-popover
@@ -28,7 +28,7 @@
       </el-table>
     </div>
     <div>
-      <el-dialog title="新增标签" :visible.sync="dialogAddTags">
+      <el-dialog title="新增标签" :visible.sync="dialogAddTags" size="tiny">
         <el-form :model="addTags">
           <el-form-item label="名称" :label-width="formLabelWidth">
             <el-input v-model="addTags.name"></el-input>
@@ -44,7 +44,7 @@
       </el-dialog>
     </div>
     <div>
-      <el-dialog title="修改标签" :visible.sync="dialogUpdateTags">
+      <el-dialog title="修改标签" :visible.sync="dialogUpdateTags" size="tiny">
         <el-form :model="updateTags">
           <el-form-item label="名称" :label-width="formLabelWidth">
             <el-input v-model="updateTags.name"></el-input>
@@ -67,6 +67,7 @@
 <script>
   import {mapState, mapActions} from 'vuex'
   import {FETCH_TAGS, CREATE_TAGS, DELETE_TAGS, UPDATE_TAGS} from '../../../store/actionTypes'
+
   export default {
     data() {
       return {
@@ -85,12 +86,12 @@
         }
       }
     },
-    async created(){
+    async created() {
       await this.FETCH_TAGS()
       this.loading = false
     },
     methods: {
-      async createTags(){
+      async createTags() {
         const payload = this.addTags
         const code = await this.CREATE_TAGS(payload)
         if (code === 200) {
@@ -99,7 +100,7 @@
           this.dialogAddTags = false
         }
       },
-      async deleteTag(id){
+      async deleteTag(id) {
         this.loading = true
         this.$refs.page.click()
         const code = await this.DELETE_TAGS({id: id})
@@ -109,18 +110,18 @@
           await this.FETCH_TAGS()
         }
       },
-      openUpdate(id, name, desc){
+      openUpdate(id, name, desc) {
         this.dialogUpdateTags = true
         this.updateTags.id = id
         this.updateTags.name = name
         this.updateTags.description = desc
       },
-      openDialogAddTags(){
+      openDialogAddTags() {
         this.addTags.name = ''
         this.addTags.description = ''
         this.dialogAddTags = true
       },
-      async updateTag(){
+      async updateTag() {
         const payload = this.updateTags
         const code = await this.UPDATE_TAGS(payload)
         this.dialogUpdateTags = false

@@ -1,26 +1,29 @@
 <template>
-  <div v-loading="loading" element-loading-text="拼命加载中" ref="page">
+  <div v-loading="loading" element-loading-text="拼命加载中" class="post-root" ref="page">
     <div class="menu-bar">
       <el-date-picker
         v-model="start"
         type="datetime"
+        size="small"
         placeholder="选择时间起点">
       </el-date-picker>
       <el-date-picker
         v-model="end"
+        size="small"
         type="datetime"
         placeholder="选择时间终点">
       </el-date-picker>
-      <el-select v-model="categories" multiple placeholder="请选择分类">
-        <el-option v-for="category in term.categories" :key="category.id" :value="category.id" :label="category.name">
-        </el-option>
-      </el-select>
-      <el-select v-model="tags" multiple placeholder="请选择标签">
+      <!--<el-select v-model="categories" multiple placeholder="请选择分类" size="small">-->
+        <!--<el-option v-for="category in term.categories" :key="category.id" :value="category.id" :label="category.name">-->
+        <!--</el-option>-->
+      <!--</el-select>-->
+      <el-select v-model="tags" multiple placeholder="请选择标签" size="small">
         <el-option v-for="tag in term.tags" :key="tag.id" :value="tag.id" :label="tag.name">
         </el-option>
       </el-select>
-      <el-input class="menu-search" v-model="title" placeholder="标题"></el-input>
-      <el-button type="primary" @click="searchPosts">搜索</el-button>
+      <el-input class="menu-search" v-model="title" placeholder="标题" size="small"></el-input>
+      <el-button size="small" @click="searchPosts">搜索</el-button>
+      <el-button size="small" @click="reset">重置</el-button>
       <el-popover
         placement="top"
         width="160"
@@ -33,7 +36,7 @@
         <el-button type="danger" v-if="multipleSelection" slot="reference">批量删除</el-button>
       </el-popover>
     </div>
-    <div class="content-state">
+    <div class="content-state" style="padding: 10px">
       <el-table :data="post.postList" @selection-change="handleSelectionChange">
         <el-table-column type="selection">
         </el-table-column>
@@ -41,11 +44,11 @@
         </el-table-column>
         <el-table-column prop="author" label="作者">
         </el-table-column>
-        <el-table-column label="分类目录">
-          <template scope="scope">
-            <div>{{(scope.row.categories || []).join(' , ')}}</div>
-          </template>
-        </el-table-column>
+        <!--<el-table-column label="分类目录">-->
+          <!--<template scope="scope">-->
+            <!--<div>{{(scope.row.categories || []).join(' , ')}}</div>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
         <el-table-column label="标签">
           <template scope="scope">
             <div>{{(scope.row.tags || []).join(' , ')}}</div>
@@ -156,6 +159,14 @@
         await this.FETCH_POST_LIST()
         this.loading = false
       },
+      reset() {
+        this.UPDATE_QUERY({key: 'tags', value: []})
+        this.UPDATE_QUERY({key: 'categories', value: []})
+        this.UPDATE_QUERY({key: 'start', value: ''})
+        this.UPDATE_QUERY({key: 'end', value: ''})
+        this.UPDATE_QUERY({key: 'title', value: ''})
+        this.fetchPostList()
+      },
       ...mapActions([FETCH_POST_LIST, FETCH_TAGS, DELETE_POST, DELETE_POSTS, FETCH_CATEGORY, UPDATE_PAGINATION]),
       ...mapMutations([UPDATE_QUERY])
     },
@@ -207,7 +218,11 @@
     }
   }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+  .post-root {
+    height: 100%;
+  }
+
   .menu-bar {
     margin: 10px 0 0 10px;
   }

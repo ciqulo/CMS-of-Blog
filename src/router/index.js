@@ -29,7 +29,7 @@ const router = new Router({
       children: [
         {
           path: '/',
-          component: Home,
+          component: PostList,
         },
         {
           path: '/post',

@@ -1,24 +1,20 @@
 <template>
-  <el-menu theme="dark"
-           :default-active="activeIndex"
-           mode="horizontal"
-           @select="handleSelect">
-    <el-menu-item index="1" class="nav-home">
-      <i class="fa fa-home fa-2x" style="vertical-align: middle" aria-hidden="true"></i>
-    </el-menu-item>
-    <el-submenu index="2">
-      <template slot="title">新建</template>
-      <el-menu-item index="2-1">文章</el-menu-item>
-      <el-menu-item index="2-2">用户</el-menu-item>
-      <el-menu-item index="2-3">标签</el-menu-item>
-    </el-submenu>
-    <el-menu-item index="1" class="nav-home">
-      你好, {{user.username}}
-    </el-menu-item>
-    <el-menu-item index="1" class="nav-home" @click="logout">
-      登出
-    </el-menu-item>
-  </el-menu>
+  <div style="background-color:rgb(50, 65, 87);height: 60px">
+    <router-link class="nav-home" to="/">
+      <i class="fa fa-home fa-2x" style="line-height: 60px" aria-hidden="true"></i>
+    </router-link>
+    <div style="float: right" class="nav-user">
+      <el-dropdown>
+        <el-button>
+          你好, {{user.username}}<i class="el-icon-caret-bottom el-icon--right"></i>
+        </el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item ><div @click="logout">登出</div></el-dropdown-item>
+          <el-dropdown-item>修改密码</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -32,13 +28,9 @@
       }
     },
     methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath)
-      },
-      async logout(){
-        const {code, message} = await this.LOGOUT() || {}
+      async logout() {
+        const {code} = await this.LOGOUT() || {}
         if (code == 200) this.$router.replace('/login')
-        else this.$message.error(message)
       },
       ...mapActions([LOGOUT]),
     },
@@ -48,9 +40,22 @@
   }
 </script>
 
-<style>
+<style lang="scss">
   .nav-home {
     width: 200px;
+    height: 60px;
     text-align: center;
+    float: left;
+    color: white;
+  }
+
+  .nav-user {
+    margin-right: 20px;
+    .el-button {
+      background-color: transparent;
+      border: none;
+      color: white;
+      line-height: 40px;
+    }
   }
 </style>

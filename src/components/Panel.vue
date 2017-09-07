@@ -12,8 +12,8 @@
   import Navigation from './partials/Navigation.vue'
   import SideBar from './partials/SideBar.vue'
 
-  export default{
-    data(){
+  export default {
+    data() {
       return {}
     },
     components: {
@@ -31,6 +31,8 @@
     bottom: 0;
     left: 200px;
     box-sizing: border-box;
+    overflow: scroll;
     width: calc(100% - 200px);
+    padding: 20px;
   }
 </style>
